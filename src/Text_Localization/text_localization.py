@@ -1,5 +1,5 @@
-from text_detect import text_detect
-from thresh import thresh
+from Text_Localization.text_detect import text_detect
+from Text_Localization.thresh import thresh
 import cv2
 
 class localTextRegion:
@@ -13,5 +13,5 @@ class localTextRegion:
 		cv2.destroyAllWindows()
 
 
-image = cv2.imread('/home/this/Flipkart_Challenge/GitHub Repo/Electronic-Invoice-Imaging/images/im9.png')
-obj = localTextRegion(image)
+# image = cv2.imread('/home/this/Flipkart_Challenge/GitHub Repo/Electronic-Invoice-Imaging/images/im9.png')
+# obj = localTextRegion(image)

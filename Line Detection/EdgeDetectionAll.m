@@ -131,4 +131,5 @@ iVeritcaledges = imerode(iVeritcaledges, [1 0 1]);
 
 im = iVeritcaledges+iHorizontaledges;
 imshow(im);
+imwrite(im, 'EdgesAll');
 CropBoxes(i2, im);

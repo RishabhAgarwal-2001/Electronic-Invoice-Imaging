@@ -91,4 +91,5 @@ iVeritcaledges = imerode(iVeritcaledges, [1 0 1]);
 
 im = iVeritcaledges;
 imshow(im);
+imwrite(im, 'EdgesV');
 %CropBoxes(i2, im);

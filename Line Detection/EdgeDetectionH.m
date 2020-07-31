@@ -75,4 +75,5 @@ iHorizontaledges = imerode(iHorizontaledges, [1; 1; 1]);
 
 im = iHorizontaledges;
 imshow(im);
+imwrite(im, 'EdgesH');
 %CropBoxes(i2, im);

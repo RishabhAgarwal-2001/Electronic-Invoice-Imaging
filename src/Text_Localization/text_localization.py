@@ -7,7 +7,9 @@ class localTextRegion:
 	def __init__(self, image):
 		self.image = image
 		self.mask, self.annotated_image = text_detect(self.image)
+		cv2.imshow('mask', self.mask)
 		self.dilated_mask, self.grouped_image, self.boundingBoxes = thresh(self.mask, self.image)
+		cv2.imshow('dilated Mask', self.dilated_mask)
 		cv2.imshow('final', self.grouped_image)
 		cv2.waitKey(0)
 		cv2.destroyAllWindows()

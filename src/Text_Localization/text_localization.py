@@ -15,10 +15,10 @@ class localTextRegion:
 		print("Regions Identified!!!\nPreparing Crops...")
 		createCrops(self.image_copy, self.boundingBoxes)
 		print("Croping Completed!!!\n\nFind Results in Results\\crops_localization folder.")
-		cv2.imshow('dilated Mask', self.dilated_mask)
-		cv2.imshow('final', self.grouped_image)
-		cv2.waitKey(0)
-		cv2.destroyAllWindows()
+		# cv2.imshow('dilated Mask', self.dilated_mask)
+		# cv2.imshow('final', self.grouped_image)
+		# cv2.waitKey(0)
+		# cv2.destroyAllWindows()
 
 
 # image = cv2.imread('/home/this/Flipkart_Challenge/GitHub Repo/Electronic-Invoice-Imaging/images/im9.png')

@@ -3,11 +3,12 @@ from Table_Start_Detection.detect_table import detectTable
 from Table_Start_Detection.crop_table import cropTable
 from Deskew.deskewImage import deskewImage
 import cv2
+from Text_Detection.detect_text import convert_crops_to_text
 
 fileName = 'im22_full.png'
 
 # Deskewing Image
-print("Startied Process....")
+print("Started Process....")
 print("Deskewing Image....")
 image = cv2.imread('../images/'+fileName)
 deskewImage(image)
@@ -27,5 +28,9 @@ path_to_table = '../results/table_meta_data/table.png'
 metaData = cv2.imread(path_to_meta_data)
 table = cv2.imread(path_to_table)
 
+
 # Separating Meta Data Regions
 obj = localTextRegion(metaData)
+
+# Converting Crops into text
+convert_crops_to_text()

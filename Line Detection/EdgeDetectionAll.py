@@ -194,5 +194,6 @@ def EdgeDetectionAll(name, toShow):
     CropBoxes(i2, im);
     return
 
-# if __name__ == '__main__':
-#     EdgeDetectionAll('Images/image24.tif', True)
+
+if __name__ == '__main__':
+     EdgeDetectionAll('Images/image24.tif', True)

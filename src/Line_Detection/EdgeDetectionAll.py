@@ -1,6 +1,6 @@
 import cv2
-from Helpers import *
-from CropBoxes import CropBoxes
+from Line_Detection.Helpers import *
+from Line_Detection.CropBoxes import CropBoxes
 import numpy as np
 from os.path import isdir
 from os import mkdir
@@ -186,12 +186,12 @@ def EdgeDetectionAll(name, toShow):
         cv2.imshow('All', im)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-    if (not isdir('Images')):
-        mkdir('Images')
-    cv2.imwrite('Images/EdgesAll.jpeg', im)
-    cv2.imwrite('Images/EdgesH.jpeg', iHorizontaledges)
-    cv2.imwrite('Images/EdgesV.jpeg', iVerticaledges)
-    CropBoxes(i2, im);
+    # if (not isdir('Images')):
+    #     mkdir('Images')
+    # cv2.imwrite('Images/EdgesAll.jpeg', im)
+    # cv2.imwrite('Images/EdgesH.jpeg', iHorizontaledges)
+    # cv2.imwrite('Images/EdgesV.jpeg', iVerticaledges)
+    CropBoxes(i2, im)
     return
 
 

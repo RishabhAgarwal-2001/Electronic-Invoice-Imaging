@@ -22,7 +22,9 @@ def rotate(
 def deskewImage(image):
     grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     angle = determine_skew(grayscale)
-    rotated = rotate(grayscale, angle, (0, 0, 0))
+    rotated = grayscale
+    if(abs(angle)>45):
+        rotated = rotate(grayscale, angle, (0, 0, 0))
     file = '../results/deskew_image/image.png'
     cv2.imwrite(file, rotated)
     return

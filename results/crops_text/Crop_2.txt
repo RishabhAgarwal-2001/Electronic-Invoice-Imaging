@@ -1,6 +1,17 @@
-GSTIN: 07AABBC8888G1AZ1
-PAN No: ABBCC9098G
++ Company: Virtua lCompany Ind
+1 Daootvlinit: Virtua lAddr
+255,0.0,0, India
 
-State : Haryana
+ 
 
-State Code : HAR
+ 
+
+{Principal Place adiress: Virtua lAddr, 255,0,0,0, India
+
+ 
+
+{Regd off: VirtualAddr, 255,0,0,0, India
+
+! State code/Desc 23 / Karnatniza
+2 GSTIM NO: 17ABCDEF 123GXYZ
+{ CIN/PEN No:A10002AA 7 TOALBOO 1895/AAABBSQ90A Website +

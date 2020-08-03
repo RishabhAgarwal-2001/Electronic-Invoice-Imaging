@@ -9,7 +9,7 @@ def CropBoxes(im, mask):
     finish = [-1, -1]
     count = 0
     # Specify the folder where the files live.
-    myFolder = 'Crops/'
+    myFolder = '../results/crops_line'
     if (not isdir(myFolder)):
         mkdir(myFolder)
     else:
@@ -55,8 +55,8 @@ def CropBoxes(im, mask):
                 for y in range (start[1], finish[1]+1):
                     temp[x-start[0], y-start[1]] = im[x, y]
             count = count+1
-            name = 'Crops/out_' + str(count)
-            name = name + '.tif'
+            name = myFolder + '/out_' + str(count)
+            name = name + '.png'
             cv2.imwrite(name, np.uint8(temp))
 
 # if __name__ == '__main__':

@@ -1,7 +1,8 @@
-‘Consigner Name & Address(Warehouse)
+SHIP TO
+
+ 
+
 RECIEVER COMPANYIND
-Reciever Companyind , 111000, India
 
-|
-
-GST No.: O7AABBC8888G1AZ1
+RECIEVER COMPANYIND ,
+111000, INDIA

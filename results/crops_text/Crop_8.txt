@@ -1,5 +1,5 @@
-Invoice No
-Invoice Date
+Shipping Terms:standard
+DockelLR No:
 
-1234
-01.07.2017
+Mode of Transport:
+Vehicle No:

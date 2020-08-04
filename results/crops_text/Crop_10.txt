@@ -1,5 +1,4 @@
-Customer PO No.
-Customer PO Date
-
-PO1234567
-01.07.2017
+| GSTIN: O/AABBUSSSEGTAZT
+PAN No: ABBCC9098G.
+State : Haryana
+State Code : HAR

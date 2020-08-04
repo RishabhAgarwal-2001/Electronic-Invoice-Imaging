@@ -1,0 +1,5 @@
+Customer PO No.
+Customer PO Date
+
+PO1234567
+01.07.2017

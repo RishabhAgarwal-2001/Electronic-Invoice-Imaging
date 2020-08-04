@@ -6,7 +6,7 @@ def thresh(Image, org_image):
 
 	# Applying imclose
 	# cv2.imshow("IMage Received Thresh", Image)
-	kernel = np.ones((13, 13), np.uint8)
+	kernel = np.ones((17, 17), np.uint8)
 	Image = cv2.morphologyEx(Image, cv2.MORPH_CLOSE, kernel)
 	# cv2.imshow("Image After imclose", Image)
 	# cv2.waitKey(0)

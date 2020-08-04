@@ -1,13 +1,5 @@
-Loading Slip Ho
-1 Truck Type/ No
-{LRN
-i Transporter:
-1 Net tt :
-5 Geos We :
+Sales Office Name & Address
+RECIEVER COMPANYIND
+Reciever Companyind , 111000, India
 
-Invoice Type nes
-
-{Invoice Rabe 1,
-invoice Date: OF 7.07,2017
-1 Time OF Supply / Date" =
-1 Paymant Terms = RTGS / DO / Cheque
+' GST No.: 07AABBC8888G1AZ1

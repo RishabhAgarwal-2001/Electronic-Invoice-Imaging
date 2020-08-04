@@ -14,13 +14,14 @@ def emptyFolder():
 		except Exception as e:
 			print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-def createCrops(image, boundingBoxes):
-	emptyFolder()
+def createCrops(image, boundingBoxes, counter):
+	if(counter==1):
+		emptyFolder()
 	crop_folder = '../results/crops_localization/'
-	cropCount = 1
 	for bbox in boundingBoxes:
 		x, y, w, h = bbox
 		crop = image[y:y+h, x:x+w]
-		cropName = crop_folder + "Crop_" + str(cropCount) + ".jpg"
-		cropCount = cropCount + 1 
+		cropName = crop_folder + "Crop_" + str(counter) + ".jpg"
+		counter = counter + 1 
 		cv2.imwrite(cropName, crop)
+	return counter

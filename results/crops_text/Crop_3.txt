@@ -1,18 +1,1 @@
-TAX INVOICE
-
-   
-
-Customer
-
-+ Reciever CompanyInd
-+ Rectever CompanyInd , 111000, India
-
-> O?TAABBC8888G1AZ1
-+ ABBCCSOS8G
-
-3 2a/Rarnateke
-
-+ 1230567
-
-+ 01,07,2017
-{Place of supply: Karnataka(29)
+VIRTUALCOMPANYIND —

@@ -6,7 +6,7 @@ import cv2
 from Text_Detection.detect_text import convert_crops_to_text
 from Line_Detection.EdgeDetectionAll import EdgeDetectionAll
 
-fileName = 'im7_full.png'
+fileName = 'im8_full.png'
 
 # Deskewing Image
 print("Started Process....")
@@ -21,7 +21,7 @@ print("Table and Meta Data Separation Started...")
 tablePosition = detectTable(fileName)
 image = cv2.imread('../results/deskew_image/image.png')
 cropTable(image, tablePosition)
-print("Table and Meta Data Separation Completed!!!\n\n")
+print("Table and Meta Data Separation Completed!!!\n")
 
 
 # Reading in the metaData and Table Image
@@ -31,7 +31,7 @@ metaData = cv2.imread(path_to_meta_data)
 table = cv2.imread(path_to_table)
 
 # Cropping Based on Lines
-print("Cropping Based on Horizontal And Vertical Lines...")
+print("Cropping Meta Data Image Based on Horizontal And Vertical Lines...")
 EdgeDetectionAll(path_to_meta_data, False)
 print("Completed!!!")
 

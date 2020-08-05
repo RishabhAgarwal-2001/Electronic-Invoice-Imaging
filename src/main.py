@@ -6,7 +6,11 @@ import cv2
 from Text_Detection.detect_text import convert_crops_to_text
 from Line_Detection.EdgeDetectionAll import EdgeDetectionAll
 
+<<<<<<< HEAD
 fileName = 'im19_full.png'
+=======
+fileName = 'im1_full.png'
+>>>>>>> 10da0c81e43bdbd9aa30e9ae4e4ef7c1cfe5e0c9
 
 # Deskewing Image
 print("Started Process....")

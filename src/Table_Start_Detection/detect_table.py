@@ -19,7 +19,7 @@ def levenshteinDistance(s1, s2):
         distances = distances_
     return distances[-1]
 
-def myround(x, base=25):
+def myround(x, base=50):
     return base * round(x/base)
 
 
@@ -27,7 +27,8 @@ def detectTable(fileName):
 	header_keyWords = ['MATERIAL', 'DESCRIPTION', 'HSN', 'QTY', 'QUANTITY', 'UNIT PRICE', 'TOTAL', 'DISCOUNT', 'TAXABLE VALUE',
 	'AMOUNT', 'IGST', 'AMT', 'S. NO.', 'RATE', 'CGST', 'SGST', 'UGST', 'ITEM', 'CODE', 'CATEGORY', 'SIZE', 'PC', 'PCS', 'PIECES',
 	'MRP', 'DISC.', 'BASIC', 'SELLING', 'PRICE', 'VALUE', 'INVOICE', 'GST', 'GOODS', 'PER', 'SERIAL', 'NUMBER', 'NO', 'TAX', 'TAXABLE',
-	'MEASUREMENT', 'SAC', 'BATCH', 'MFG.', 'AMT', 'PRODUCT', 'CESS', 'UOM', 'GROSS', 'TAX', 'SERVICE', 'DISC', 'NOS', 'NOS.']
+	'MEASUREMENT', 'SAC', 'BATCH', 'MFG.', 'AMT', 'PRODUCT', 'CESS', 'UOM', 'GROSS', 'TAX', 'SERVICE', 'DISC', 'NOS', 'NOS.',
+	'ITEM', 'DESCRIPTION', 'HSN', 'CATEGORY', 'MRP', 'TOTAL', 'BASIC', 'SELLING']
 
 	img = cv2.imread('/home/this/Flipkart_Challenge/GitHub Repo/Electronic-Invoice-Imaging/images/'+fileName)
 
@@ -35,6 +36,7 @@ def detectTable(fileName):
 
 	text = d['text']
 	top = d['top']
+
 
 	tx = []
 	pos = []
@@ -51,12 +53,13 @@ def detectTable(fileName):
 			tx.append(currentText)
 			pos.append(currrenTop)
 
+
 	pos_copy = pos[:]
 
 	for i in range(len(pos)):
 		pos[i] = myround(pos[i])
 
-
+	
 	position = max(pos,key=pos.count)
 
 	linePos = 1000000

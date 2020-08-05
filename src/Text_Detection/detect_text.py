@@ -35,7 +35,7 @@ def convert_crops_to_text():
 
 	for filename in os.listdir(crop_folder):
 		file_path = os.path.join(crop_folder, filename)
-		text = ocr_core(file_path)
+		text = ocr_core(file_path).upper()
 		name = text_folder + filename.split('.')[0] + ".txt"
 		file = open(name, "w+")
 		file.write(text)

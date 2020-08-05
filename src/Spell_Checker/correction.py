@@ -1,9 +1,10 @@
 import re
 from collections import Counter
+import os
 
 def words(text): return re.findall(r'\w+', text.upper())
 
-WORDS = Counter(words(open('big2.txt').read()))
+WORDS = Counter(words(open('./Spell_Checker/big2.txt').read()))
 
 def P(word, N=sum(WORDS.values())): 
     "Probability of `word`."
@@ -23,7 +24,7 @@ def known(words):
 
 def edits1(word):
     "All edits that are one edit away from `word`."
-    letters    = 'abcdefghijklmnopqrstuvwxyz'
+    letters    = 'abcdefghijklmnopqrstuvwxyz/'
     letters = letters.upper()
     splits     = [(word[:i], word[i:])    for i in range(len(word) + 1)]
     # print (splits)
@@ -37,5 +38,12 @@ def edits2(word):
     "All edits that are two edits away from `word`."
     return (e2 for e1 in edits1(word) for e2 in edits1(e1))
 
-# print (WORDS)
-print (candidates('HANE'))
+
+def spellCheck():
+    crop_folder = '../results/crops_text'
+    for filename in os.listdir(crop_folder):
+        file_path = os.path.join(crop_folder, filename)
+        text = str(open(file_path).read())
+        text = text.split()
+        for i in text:
+            print(correction(i.upper()))

@@ -5,10 +5,10 @@ import numpy as np
 def thresh(Image, org_image):
 
 	# Applying imclose
-	cv2.imshow("IMage Received Thresh", Image)
+	# cv2.imshow("IMage Received Thresh", Image)
 	kernel = np.ones((21, 31), np.uint8)
 	Image = cv2.morphologyEx(Image, cv2.MORPH_CLOSE, kernel)
-	cv2.imshow("Image After imclose", Image)
+	# cv2.imshow("Image After imclose", Image)
 	
 	# Converting image in hsv and applying threshold
 	hsv = cv2.cvtColor(Image, cv2.COLOR_BGR2HSV)
@@ -23,9 +23,9 @@ def thresh(Image, org_image):
 	kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 7))
 	dilate = cv2.dilate(mask, kernel, iterations=20)
 
-	cv2.imshow("After Dilation", dilate)
-	cv2.waitKey(0)
-	cv2.destroyAllWindows()
+	# cv2.imshow("After Dilation", dilate)
+	# cv2.waitKey(0)
+	# cv2.destroyAllWindows()
 
 	# Analyze the results
 	# cv2.imshow("This", dilate)

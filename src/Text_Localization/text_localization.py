@@ -16,12 +16,12 @@ class localTextRegion:
 			sys.stdout.flush()
 			file_path = os.path.join(crop_folder, filename)
 			self.image = cv2.imread(file_path)
+			self.image_copy = self.image.copy()
 			# cv2.imshow("Before", self.image)
 			self.image = cv2.copyMakeBorder(self.image, 20, 20, 20, 20, cv2.BORDER_CONSTANT, value=(255, 255, 255))
 			# cv2.imshow("Padded", self.image)
 			# cv2.waitKey(0)
 			# cv2.destroyAllWindows()
-			self.image_copy = self.image
 			self.mask, self.annotated_image = text_detect(self.image)
 			self.dilated_mask, self.grouped_image, self.boundingBoxes = thresh(self.mask, self.image)
 			self.counter = createCrops(self.image_copy, self.boundingBoxes, self.counter)

@@ -1,0 +1,52 @@
+Branch Address (Supplier)
+GSTIN No.
+
+Name
+
+Address
+
+State Code / State
+
+nvoice No. / Date
+
+Nature of Invoice
+
+20 No. / Date
+
+SAP Ref. No.
+
+details of receiver (Billed to)
+Sustomer Id
+
+Name
+
+Address
+
+state Code / State
+
+3STIN / Unique Id
+
+: 17ABCDEF123GXYZ
+
+VIRTUALCOMPANYIND
+VirtualAddr, 255.0.0.0, India
+
+: 33 / Tamil Nadu
+
+: 1234 / 01.07.2017
+
+: Original
+
++ PO1234567 / 01.07.2017
+
+25436782134
+
+: 2309167845
++ RECIEVER COMPANYIND
+
+VirtualAddr, 255.0.0.0, India
+
+Bangalore Karnataka India 560067
+
+: 29/ Karnataka
+: O7AABBC8888G1AZ1

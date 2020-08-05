@@ -1,8 +1,23 @@
-SHIP TO
+ice Original / Duplicate / Triplicate
 
- 
+Depot Address
+GSTIN : 17ABCDEF123GXYZ
+Name : VIRTUALCOMPANYIND
+Address ? VirtualAddr, 255.0.0.0, India
+HOSUR Pin: 635126
+Phone:
+State Code / State :33/ Tamil Nadu
+SO No. / Date : 1234567 / 01.07.2017
+TSO No. / Name s
+Payment Terms : Payment due in 45 days
+Details of consignee (Shipped to)
+Customer Id : 2309167845
+Name : RECIEVER COMPANYIND
+Address = VirtualAddr, 255.0.0.0, India
 
-RECIEVER COMPANYIND
+BANGALORE Karnataka India 560067
+Phone:
 
-RECIEVER COMPANYIND ,
-111000, INDIA
+State Code / State : 29/ Karnataka
+
+GSTIN / Unique Id : O7AABBC8888G1AZ1

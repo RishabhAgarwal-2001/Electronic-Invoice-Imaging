@@ -1,6 +1,5 @@
-GSTIN : 1/ABCUEFTZSGAYL
-PAN No: AAABB9990A
-
-State : Haryana
-
-State Code : HAR
+Tax Invoice
+Depot Address
+GSTIN
+Name
+Address

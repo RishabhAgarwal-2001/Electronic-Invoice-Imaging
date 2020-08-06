@@ -11,6 +11,9 @@ Bill To: Address, Name, State, Telephone, PAN, GSTNo					|
 ====================================									|
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '''
+
+
+
 import re
 import math
 
@@ -29,18 +32,33 @@ def matchesGST(txt):
 	else:
 		return False
 
+def matchesPAN(txt):
+	panRegEx = "^([A-Z]{5}[0-9]{4}[A-Z]{1})"
+	x = re.search(panRegEx, txt)
+	if(x):
+		return True
+	else:
+		return False
+
 def distance(point1, point2, choice=1):
+	print(point1, point2)
 	if(choice==1):
 		return abs(point1[0]-point2[0]) + abs(point1[1]-point2[1])
-	else:
+	elif(choice==2):
 		x = abs(point1[0]-point2[0])
 		y = abs(point1[1]-point2[1])
-		return math.sqrt(x*x+y*y)
+		return math.sqrt((x*x)+(y*y))
+	elif(choice==3):
+		x = abs(point1[0]-point2[0])
+		y = abs(point1[1]-point2[1])
+		return min(x, y)
 
 
 # Buyer, Customer, Ship to, Billed to, Consignee, Shipped
 def findBuyerValues(dictionaryList):
-	keyWords = ["BUYER", "BUY", "BOUGHT", "CUSTOMER", "CONSIGNEE", "SHIPPED", "BILLED"]
+	keyWords = ["BUYER", "CUSTOMER", "CONSIGNEE"]
+	keyWords_to = ["SHIPPED", "SHIP"]
+	keyWords_by = ["BOUGHT"]
 	results = {}
 	for currentDictionary in dictionaryList:
 
@@ -53,6 +71,14 @@ def findBuyerValues(dictionaryList):
 			if(w.upper() in keyWords):
 				valid = True
 				break
+			if(w.upper() in keyWords_to):
+				if("TO" in words):
+					valid = True
+					break
+			if(w.upper() in keyWords_by):
+				if("BY" in words):
+					valid = True
+					break
 		if(valid==False):
 			continue
 		
@@ -68,7 +94,6 @@ def findBuyerValues(dictionaryList):
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
-			print(GST_Location)
 			for w in words:
 				if(matchesGST(w) and distance(currentDictionary[w], GST_Location, 2)<GST_Value_loc):
 					GST_Value = w
@@ -76,6 +101,30 @@ def findBuyerValues(dictionaryList):
 					print("Distance = ", GST_Value_loc)
 		results["GST"] = [GST_Value, GST_Value_loc]
 		# ---------------------------------------------------------------
+
+
+		# ---------------------------------------------------------------
+		# Finding GST Number in the array of words
+		PAN_Value = "" # Variable to Store the value of GST Number
+		PAN_Value_loc = math.inf # Variable to store the location of GST Number
+		PAN_Location = None # Variable to Store the Location of KEY GST
+		# Looking for Key GST in words
+		for w in words:
+			if(re.search("^PAN", w)):
+				PAN_Location = currentDictionary[w]
+				break
+		# If Key GST exists
+		if(PAN_Location is not None):
+			print(PAN_Location)
+			for w in words:
+				if(matchesPAN(w) and distance(currentDictionary[w], PAN_Location, 2)<PAN_Value_loc):
+					PAN_Value = w
+					PAN_Value_loc = distance(currentDictionary[w], PAN_Location, 2)
+					print("Distance = ", PAN_Value_loc)
+		results["PAN"] = [PAN_Value, PAN_Value_loc]
+		# ---------------------------------------------------------------
+
 	return results
 
-# print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50]}]))
+print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50],
+	"PAN":[20, 20], "BNZAA2318J":[20, 25]}]))

@@ -7,7 +7,7 @@ from Text_Detection.detect_text import convert_crops_to_text
 from Line_Detection.EdgeDetectionAll import EdgeDetectionAll
 from Spell_Checker.correction import spellCheck
 
-fileName = 'im11_full.png'
+fileName = 'im19_full.png'
 
 # Deskewing Image
 print("Started Process....")

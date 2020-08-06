@@ -5,9 +5,8 @@ from Deskew.deskewImage import deskewImage
 import cv2
 from Text_Detection.detect_text import convert_crops_to_text
 from Line_Detection.EdgeDetectionAll import EdgeDetectionAll
-from Spell_Checker.correction import spellCheck
 
-fileName = 'im19_full.png'
+fileName = 'im1_full.png'
 
 # Deskewing Image
 print("Started Process....")
@@ -41,5 +40,3 @@ obj = localTextRegion(metaData)
 
 # Converting Crops into text
 convert_crops_to_text()
-
-spellCheck()

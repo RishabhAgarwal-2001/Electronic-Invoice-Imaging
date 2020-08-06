@@ -4,7 +4,7 @@ import os
 
 def words(text): return re.findall(r'\w+', text.upper())
 
-WORDS = Counter(words(open('./Spell_Checker/big2.txt').read()))
+WORDS = Counter(words(open(os.getcwd()+'/../Spell_Checker/big2.txt').read()))
 
 def P(word, N=sum(WORDS.values())): 
     "Probability of `word`."
@@ -38,12 +38,14 @@ def edits2(word):
     "All edits that are two edits away from `word`."
     return (e2 for e1 in edits1(word) for e2 in edits1(e1))
 
+def spellCheck(text):
+    return correction(text)
 
-def spellCheck():
-    crop_folder = '../results/crops_text'
-    for filename in os.listdir(crop_folder):
-        file_path = os.path.join(crop_folder, filename)
-        text = str(open(file_path).read())
-        text = text.split()
-        for i in text:
-            print(correction(i.upper()))
+# def spellCheck(text):
+#     crop_folder = '../results/crops_text'
+#     for filename in os.listdir(crop_folder):
+#         file_path = os.path.join(crop_folder, filename)
+#         text = str(open(file_path).read())
+#         text = text.split()
+#         for i in text:
+#             print(correction(i.upper()))

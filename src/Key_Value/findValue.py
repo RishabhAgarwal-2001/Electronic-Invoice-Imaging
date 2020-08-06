@@ -76,7 +76,6 @@ def findBuyerValues(dictionaryList):
 					print("Distance = ", GST_Value_loc)
 		results["GST"] = [GST_Value, GST_Value_loc]
 		# ---------------------------------------------------------------
-
 	return results
 
-print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50]}]))
+# print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50]}]))

@@ -23,6 +23,7 @@ def findValues(dictionaryList):
 	and values as a list of top and left position in that specific crop
 	'''
 	buyerData = findBuyerValues(dictionaryList)
+	return buyerData
 
 def matchesGST(txt):
 	gstRegEx = "\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}"
@@ -161,8 +162,8 @@ def findBuyerValues(dictionaryList):
 
 	return results
 
-dic = [{"CUSTOMER":[10, 10], "18AABCU9603R1ZM":[20, 100], "18AABCU9603R1ZQ":[20, 5], "GSTIN":[12, 50],
-	"PAN":[20, 10], "BNZAA2318J":[30, 25]}]
+# dic = [{"CUSTOMER":[10, 10], "18AABCU9603R1ZM":[20, 100], "18AABCU9603R1ZQ":[20, 5], "GSTIN":[12, 50],
+# 	"PAN":[20, 10], "BNZAA2318J":[30, 25]}]
 
 
-print(findBuyerValues(dic))
+# print(findBuyerValues(dic))

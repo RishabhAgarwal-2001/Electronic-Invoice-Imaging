@@ -75,88 +75,116 @@ def distance(point1, point2, choice=1):
 		return min(x, y)
 
 
+# Assuming values in form (left, top)
+def wordsNext(dictionary, location, neighbourCount=1):
+
+	pairs = []
+	for k in dictionary.keys():
+		pairs.append([k, dictionary[k]])
+
+	pairs = sorted(pairs, key = lambda x: (x[1][0], x[1][1]))
+
+	alpha = location[:]
+
+	
+	neigh = []
+	
+	for i in pairs:
+		if(isGreater(alpha, i[1])):
+			neigh.append(i[0])
+
+	return neigh[:neighbourCount]
+
+def isGreater(point1, point2):
+	if(point1[0]-5<point2[0] and point1[1]-5<point2[1]):
+		return True
+	else:
+		return False
+
+
 # Buyer, Customer, Ship to, Billed to, Consignee, Shipped
 def findBuyerValues(dictionaryList):
 	keyWords = ["BUYER", "CUSTOMER", "CONSIGNEE"]
 	keyWords_to = ["SHIPPED", "SHIP"]
 	keyWords_by = ["BOUGHT"]
-	results = {}
-	results["GST"] = ["", math.inf]
-	results["PAN"] = ["", math.inf]
-	for currentDictionary in dictionaryList:
+	results = {"GST":"", "PAN":""}
 
+	for currentDictionary in dictionaryList:
 		# List containing all Words in the given crop
 		words = currentDictionary.keys()
+
+		loc = [-1, -1]
 
 		# Checking if the crop contains information about the Buyer
 		valid = False
 		for w in words:
 			if(w.upper() in keyWords):
 				valid = True
+				loc = currentDictionary[w]
 				break
 			if(w.upper() in keyWords_to):
-				if("TO" in words):
-					valid = True
-					break
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 5)
+				for i in neigh:
+					if(re.search("TO", i)):
+						valid = True
+						loc = currentDictionary[w]
+						break
 			if(w.upper() in keyWords_by):
-				if("BY" in words):
-					valid = True
-					break
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 5)
+				for i in neigh:
+					if(re.search("BY", i)):
+						valid = True
+						loc = currentDictionary[w]
+						break
+
 		if(valid==False):
 			continue
+		
 		
 		# ---------------------------------------------------------------
 		# Finding GST Number in the array of words
 		GST_Value = "" # Variable to Store the value of GST Number
-		GST_Value_loc = math.inf # Variable to store the location of GST Number
-		GST_Location = [-1, -1] # Variable to Store the Location of KEY GST
+		GST_Location = None # Variable to Store the Location of KEY GST
 		# Looking for Key GST in words
 		for w in words:
-			if(re.search("^GST", w)):
+			if(re.search("^GST", w) and isGreater(loc, currentDictionary[w])):
 				GST_Location = currentDictionary[w]
 				print("Found GST At Location: ", GST_Location)
 				break
 		# If Key GST exists
-		if(GST_Location != [-1, -1]):
-			for w in words:
-				if(matchesGST(w) and distance(currentDictionary[w], GST_Location, 2)<GST_Value_loc):
-					print("I am Going In")
-					GST_Value = w
-					GST_Value_loc = distance(currentDictionary[w], GST_Location, 2)
-					print("GST Value: ",GST_Value)
-					print("Distance = ", GST_Value_loc)
-			print("GST Value Outside: ", GST_Value)
-			results["GST"] = [GST_Value, GST_Value_loc]
-		# else:
-		# 	results["GST"] = ["", math.inf]
+		if(GST_Location is not None):
+    			neigh = wordsNext(currentDictionary, GST_Location, 5)
+			for i in neigh:
+				if(len(i)>12 or matchesGST(i)):
+					GST_Value = i
+					break
+			results["GST"] = GST_Value
 		# ---------------------------------------------------------------
 
 
 		# ---------------------------------------------------------------
 		# Finding GST Number in the array of words
 		PAN_Value = "" # Variable to Store the value of GST Number
-		PAN_Value_loc = math.inf # Variable to store the location of GST Number
 		PAN_Location = None # Variable to Store the Location of KEY GST
 		# Looking for Key GST in words
 		for w in words:
-			if(re.search("^PAN", w)):
+			if(re.search("^PAN", w) and isGreater(loc, currentDictionary[w])):
 				PAN_Location = currentDictionary[w]
 				break
 		# If Key GST exists
 		if(PAN_Location is not None):
-			print(PAN_Location)
-			for w in words:
-				if(matchesPAN(w) and distance(currentDictionary[w], PAN_Location, 2)<PAN_Value_loc):
-					PAN_Value = w
-					PAN_Value_loc = distance(currentDictionary[w], PAN_Location, 2)
-					print("Distance = ", PAN_Value_loc)
-			results["PAN"] = [PAN_Value, PAN_Value_loc]
+			neigh = wordsNext(currentDictionary, PAN_Location, 5)
+			for i in neigh:
+				if((len(i)>8 and len(i)<10) or matchesPAN(i)):
+					PAN_Value = i
+					break
+			results["PAN"] = PAN_Value
 		# ---------------------------------------------------------------
 
 	return results
 
 def FindPONumber(lod):
-	dictionary = {}
+    	dictionary = {}
 	for currdict in lod:
 		for text in currdict.keys():
 			if (matchesPO(text)):

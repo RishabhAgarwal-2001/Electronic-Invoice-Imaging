@@ -8,7 +8,7 @@ from Line_Detection.EdgeDetectionAll import EdgeDetectionAll
 from Generate_Data.generate_data import GenerateData
 from Key_Value.findValue import *
 
-fileName = 'im18_full.png'
+fileName = 'im5_full.png'
 
 # Deskewing Image
 print("Started Process....")
@@ -47,6 +47,9 @@ folder = '../results/crops_localization/'
 lst = GenerateData(folder)
 print(lst)
 print("Find Values: ")
-print(findBuyerValues(lst))
-print(FindPONumber(lst))
-print(FindInvNumber(lst))
+# print(findBuyerValues(lst))
+# print(FindPONumber(lst))
+# print(FindInvNumber(lst))
+# dateList = ['LR', 'INVOICE', 'DA', 'DELIVERY', 'PURCHASE', 'PO', 'DUE', 'LOA', 'ORDER', 'PICKING', 'PASS', 'CHALLAN', 'DISPATCH', 'SO']
+# print(FindDate(lst, dateList))
+print(FindCurrency(lst))

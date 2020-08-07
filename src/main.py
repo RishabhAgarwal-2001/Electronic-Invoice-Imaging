@@ -8,7 +8,7 @@ from Line_Detection.EdgeDetectionAll import EdgeDetectionAll
 from Generate_Data.generate_data import GenerateData
 from Key_Value.findValue import *
 
-fileName = 'im5_full.png'
+fileName = 'im10_full.png'
 
 # Deskewing Image
 print("Started Process....")

@@ -6,7 +6,7 @@ def thresh(Image, org_image):
 
 	# Applying imclose
 	# cv2.imshow("IMage Received Thresh", Image)
-	kernel = np.ones((21, 31), np.uint8)
+	kernel = np.ones((31, 31), np.uint8)
 	Image = cv2.morphologyEx(Image, cv2.MORPH_CLOSE, kernel)
 	# cv2.imshow("Image After imclose", Image)
 	
@@ -20,7 +20,7 @@ def thresh(Image, org_image):
 
 
 
-	kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 7))
+	kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 5))
 	dilate = cv2.dilate(mask, kernel, iterations=20)
 
 	# cv2.imshow("After Dilation", dilate)

@@ -22,8 +22,14 @@ def findValues(dictionaryList):
 	Input Parameter: A List of Dictionary, where each dictionary has keys as corrected words
 	and values as a list of top and left position in that specific crop
 	'''
+	for i in dictionaryList:
+		print(i)
+		print()
+	results = {}
 	buyerData = findBuyerValues(dictionaryList)
-	return buyerData
+	billToData = findBillerValue(dictionaryList)
+	results = {**buyerData, **billToData}
+	return results
 
 def matchesGST(txt):
 	gstRegEx = "\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{2}[Z]{1}[A-Z\d]{1}"
@@ -105,7 +111,7 @@ def wordsNext(dictionary, location, neighbourCount=1):
 	return neigh[:neighbourCount]
 
 def isGreater(point1, point2):
-	if(point1[0]-5<point2[0] and point1[1]-5<point2[1]):
+	if(point1[0]-22<point2[0] and point1[1]-22<point2[1]):
 		return True
 	else:
 		return False
@@ -116,13 +122,131 @@ def isBelow (point1, point2):
 	else:
 		return False
 
+
+def levenshteinDistance(s1, s2):
+    if len(s1) > len(s2):
+        s1, s2 = s2, s1
+
+    distances = range(len(s1) + 1)
+    for i2, c2 in enumerate(s2):
+        distances_ = [i2+1]
+        for i1, c1 in enumerate(s1):
+            if c1 == c2:
+                distances_.append(distances[i1])
+            else:
+                distances_.append(
+                    1 + min((distances[i1], distances[i1 + 1], distances_[-1])))
+        distances = distances_
+    return distances[-1]
+
+def checkState(word):
+	states = ["Andhra", "Arunachal", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal", "Jammu", "Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madhya", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha",
+           "Punjab", "Rajasthan", "Sikkim", "Tamil", "Nadu", "Telangana", "Tripura", "Uttar", "Uttarakhand", "West", "Bengal", "Andaman", "Nicobar", "Chandigarh", "Dadra", "Nagar", "Haveli", "Daman", "Diu", "Lakshadweep", "Delhi", "Puducherry"]
+	for s in states:
+		s = str(s.upper())
+		if(levenshteinDistance(s, word)<2 or re.search(s, word.upper())):
+			return s.upper()
+	return ""
+
+
+
+def findBillerValue(dictionaryList):
+	keyWords = ["BILL-TO"]
+	keyWords_to = ["BILL", "BILLED", "SOLD"]
+	results = {"BILLED_GST": "", "BILLED_PAN": "", "BILLED_STATE": ""}
+	for currentDictionary in dictionaryList:
+		# List containing all Words in the given crop
+		words = currentDictionary.keys()
+
+		loc = [-1, -1]
+
+		# Checking if the crop contains information about the Buyer
+		valid = False
+		for w in words:
+			if(w.upper() in keyWords):
+				valid = True
+				loc = currentDictionary[w]
+				break
+			if(w.upper() in keyWords_to):
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 5)
+				for i in neigh:
+					if(re.search("TO", i)):
+						valid = True
+						loc = currentDictionary[w]
+						break
+			
+
+		if(valid == False):
+			continue
+
+		# ---------------------------------------------------------------
+		# Finding GST Number in the array of words
+		GST_Value = ""  # Variable to Store the value of GST Number
+		GST_Location = None  # Variable to Store the Location of KEY GST
+		# Looking for Key GST in words
+		for w in words:
+			if((re.search("^TIN", w) or re.search("^GST", w) or re.search("^STI", w)) and isBelow(loc, currentDictionary[w])):
+				GST_Location = currentDictionary[w]
+				break
+		# If Key GST exists
+		if(GST_Location is not None):
+			neigh = wordsNext(currentDictionary, GST_Location, 5)
+			for i in neigh:
+				if(len(i) > 12 or matchesGST(i)):
+					GST_Value = i
+					break
+			results["BILLED_GST"] = GST_Value
+		# ---------------------------------------------------------------
+
+		# ---------------------------------------------------------------
+		# Finding GST Number in the array of words
+		PAN_Value = ""  # Variable to Store the value of GST Number
+		PAN_Location = None  # Variable to Store the Location of KEY GST
+		# Looking for Key GST in words
+		for w in words:
+			if(re.search("^PAN", w) and isBelow(loc, currentDictionary[w])):
+				PAN_Location = currentDictionary[w]
+				break
+		# If Key GST exists
+		if(PAN_Location is not None):
+			neigh = wordsNext(currentDictionary, PAN_Location, 5)
+			for i in neigh:
+				if((len(i) > 8 and len(i)<10) or matchesPAN(i)):
+					PAN_Value = i
+					break
+			results["BILLED_PAN"] = PAN_Value
+		# ---------------------------------------------------------------
+
+		# ---------------------------------------------------------------
+		# Finding GST Number in the array of words
+		STATE_Value = ""  # Variable to Store the value of GST Number
+		STATE_Location = None  # Variable to Store the Location of KEY GST
+		# Looking for Key GST in words
+		for w in words:
+			if(re.search("STATE", w) and isBelow(loc, currentDictionary[w])):
+				STATE_Location = currentDictionary[w]
+				break
+		# If Key GST exists
+			if(STATE_Location is not None):
+				neigh = wordsNext(currentDictionary, STATE_Location, 7)
+				for i in neigh:
+					if(checkState(i)!=''):
+						STATE_Value = checkState(i)
+						break
+			results["BILLED_STATE"] = STATE_Value
+		# ---------------------------------------------------------------
+
+
+
+	return results
+
 # Buyer, Customer, Ship to, Billed to, Consignee, Shipped
 def findBuyerValues(dictionaryList):
 	keyWords = ["BUYER", "CUSTOMER", "CONSIGNEE"]
 	keyWords_to = ["SHIPPED", "SHIP"]
 	keyWords_by = ["BOUGHT"]
-	results = {"GST":"", "PAN":""}
-
+	
+	results = {"SHIPPED_GST": "", "SHIPPED_PAN": "", "SHIPPED_STATE": ""}
 	for currentDictionary in dictionaryList:
 		# List containing all Words in the given crop
 		words = currentDictionary.keys()
@@ -154,26 +278,27 @@ def findBuyerValues(dictionaryList):
 		if(valid==False):
 			continue
 		
-		print("Customer Crop:", loc)
+		# print("Customer Crop:", loc)
 		# ---------------------------------------------------------------
 		# Finding GST Number in the array of words
 		GST_Value = "" # Variable to Store the value of GST Number
 		GST_Location = None # Variable to Store the Location of KEY GST
 		# Looking for Key GST in words
 		for w in words:
-			print("W: ",w, currentDictionary[w])
+			# print("W: ",w, currentDictionary[w])
 			if((re.search("^TIN", w) or re.search("^GST", w) or re.search("^STI", w)) and isBelow(loc, currentDictionary[w])):
 				GST_Location = currentDictionary[w]
 				print("Found GST At Location: ", GST_Location)
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
-			neigh = wordsNext(currentDictionary, GST_Location, 5)
+			neigh = wordsNext(currentDictionary, GST_Location, 10)
+			print(neigh)
 			for i in neigh:
 				if(len(i)>12 or matchesGST(i)):
 					GST_Value = i
 					break
-			results["GST"] = GST_Value
+			results["SHIPPED_GST"] = GST_Value
 		# ---------------------------------------------------------------
 
 
@@ -193,7 +318,36 @@ def findBuyerValues(dictionaryList):
 				if((len(i)>8 and len(i)<10) or matchesPAN(i)):
 					PAN_Value = i
 					break
-			results["PAN"] = PAN_Value
+			results["SHIPPED_PAN"] = PAN_Value
+		# ---------------------------------------------------------------
+
+		# ---------------------------------------------------------------
+		# Finding GST Number in the array of words
+		STATE_Value = ""  # Variable to Store the value of GST Number
+		STATE_Location = None  # Variable to Store the Location of KEY GST
+		# Looking for Key GST in words
+		for w in words:
+			if(re.search("STATE", w) and isBelow(loc, currentDictionary[w])):
+				STATE_Location = currentDictionary[w]
+				break
+			if(re.search("PLACE", w)):
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 7)
+				for x in neigh:
+					if(re.search("SUPPLY", x.upper()) or re.search("DELIVER", x.upper())):
+						STATE_Location = currentDictionary[w]
+						break
+				if(STATE_Location is not None):
+					break
+		# If Key GST exists
+		if(STATE_Location is not None):
+			print("State Found--------")
+			neigh = wordsNext(currentDictionary, STATE_Location, 7)
+			print(neigh)
+			for i in neigh:
+				if(checkState(i) != ''):
+					STATE_Value = checkState(i)
+					break
+		results["SHIPPED_STATE"] = STATE_Value
 		# ---------------------------------------------------------------
 
 	return results

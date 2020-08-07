@@ -55,7 +55,7 @@ def matchesInvNo(txt):
 		return False
 
 def matchesDate(txt):
-	invRegEx = "^([1-9] |1[0-9]| 2[0-9]|3[0-1])(.|-)([1-9] |1[0-2])(.|-|)20[0-9][0-9]$"
+	invRegEx = "^([1-9]|0[1-9]|1[0-9]|2[0-9]|3[0-1])(/|-|.)(0[1-9]|[1-9]|1[0-2])(/|-|.)(20[0-9][0-9])$"
 	x = re.search(invRegEx, txt)
 	if(x):
 		return True
@@ -228,7 +228,41 @@ def FindInvNumber(lod):
 				continue
 	return dictionary
 
+def FindDate(lod, dateList):
+	dictionary = {}
+	for currdict in lod:
+		for text in currdict.keys():
+			for dateFormat in dateList:
+				if (text == dateFormat):
+					print(text)
+					print(currdict[text])
+					neighbours = wordsNext (currdict, currdict[text], 6)
+					print(neighbours)
+					date = ''
+					for i in neighbours:
+						if (matchesDate(i)):
+							date = i
+					if (date != ''):
+						dictionary[text+' DATE'] = date
+	return dictionary
+
+def FindCurrency(lod):
+	dictionary = {}
+	for currdict in lod:
+		for text in currdict.keys():
+			if (text == 'CURRENCY'):
+				# print(text)
+				# print(currdict[text])
+				neighbours = wordsNext (currdict, currdict[text], 6)
+				# print(neighbours)
+				for i in neighbours:
+					if (i == 'USD' or i == 'INR'):
+						dictionary[text] = i
+						return dictionary
+	return dictionary
+
 # print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50],
 	# "PAN":[20, 20], "BNZAA2318J":[20, 25]}]))
 
 # print (matchesGST('07AABBC8888G1AZ1'))
+# print(matchesDate('01.07.2017'))

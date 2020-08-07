@@ -4,7 +4,7 @@ import os
 
 def words(text): return re.findall(r'\w+', text.upper())
 
-WORDS = Counter(words(open(os.getcwd()+'/../Spell_Checker/big2.txt').read()))
+WORDS = Counter(words(open(os.getcwd()+'/Spell_Checker/big2.txt').read()))
 
 def P(word, N=sum(WORDS.values())): 
     "Probability of `word`."
@@ -12,10 +12,13 @@ def P(word, N=sum(WORDS.values())):
 
 def correction(word): 
     "Most probable spelling correction for word."
+    if (len(word) >= 2 and (word[-2] == "’" or word[-2] == "'") and word[-1] == 'S'):
+        word = word[:-2]
     return max(candidates(word), key=P)
 
 def candidates(word): 
     "Generate possible spelling corrections for word."
+    # print(known(edits2(word)))
     return (known([word]) or known(edits1(word)) or known(edits2(word)) or [word])
 
 def known(words): 
@@ -24,7 +27,7 @@ def known(words):
 
 def edits1(word):
     "All edits that are one edit away from `word`."
-    letters    = 'abcdefghijklmnopqrstuvwxyz/'
+    letters    = 'abcdefghijklmnopqrstuvwxyz'
     letters = letters.upper()
     splits     = [(word[:i], word[i:])    for i in range(len(word) + 1)]
     # print (splits)
@@ -49,3 +52,5 @@ def spellCheck(text):
 #         text = text.split()
 #         for i in text:
 #             print(correction(i.upper()))
+
+# print(correction("CONSIGNAE'S"))

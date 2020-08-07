@@ -1,15 +1,12 @@
 import sys
 # insert at 1, 0 is the script path (or '' in REPL)
-sys.path.insert(1, '../Spell_Checker/')
-sys.path.insert(2, '../Key_Value/')
 
 import pytesseract
 import cv2
 import numpy as np
 import os
 from pytesseract import Output
-from correction import spellCheck
-from findValue import *
+from Spell_Checker.correction import spellCheck
 
 def hasNumbers(inputString):
     for char in inputString:
@@ -23,8 +20,7 @@ def hasCharacters(inputString):
             return True
     return False
 
-def GenerateData ():
-    folder = '../../results/crops_localization/'
+def GenerateData (folder):
     dictList = []
     # for x in range(n)
     #     dictlist = [dict()]
@@ -42,7 +38,7 @@ def GenerateData ():
                 continue
             if (not hasCharacters(text)):
                 newdict[text] = [tops[i], lefts[i]]
-                continue;
+                continue
             if (hasNumbers(text) and len(text) < 2):
                 newdict[text] = [tops[i], lefts[i]]
                 continue
@@ -53,10 +49,7 @@ def GenerateData ():
             
     return dictList
 
-lst = GenerateData()
-print(lst)
-print("Find Values: ")
-# print(findBuyerValues(lst))
-print(FindPONumber(lst))
-print(FindInvNumber(lst))
+
+# print(FindPONumber(lst))
+# print(FindInvNumber(lst))
 # print(spellCheck('GSTIN'))

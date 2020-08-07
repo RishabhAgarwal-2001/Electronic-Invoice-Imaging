@@ -101,6 +101,11 @@ def isGreater(point1, point2):
 	else:
 		return False
 
+def isBelow (point1, point2):
+	if (point1[0] - 5 < point2[0]):
+		return True
+	else:
+		return False
 
 # Buyer, Customer, Ship to, Billed to, Consignee, Shipped
 def findBuyerValues(dictionaryList):
@@ -140,20 +145,22 @@ def findBuyerValues(dictionaryList):
 		if(valid==False):
 			continue
 		
-		
+		print("Customer Crop:", loc)
 		# ---------------------------------------------------------------
 		# Finding GST Number in the array of words
 		GST_Value = "" # Variable to Store the value of GST Number
 		GST_Location = None # Variable to Store the Location of KEY GST
 		# Looking for Key GST in words
 		for w in words:
-			if(re.search("^GST", w) and isGreater(loc, currentDictionary[w])):
+			print("W: ",w, currentDictionary[w])
+			if((re.search("^TIN", w) or re.search("^GST", w) or re.search("^STI", w)) and isBelow(loc, currentDictionary[w])):
 				GST_Location = currentDictionary[w]
 				print("Found GST At Location: ", GST_Location)
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
-    			neigh = wordsNext(currentDictionary, GST_Location, 5)
+			neigh = wordsNext(currentDictionary, GST_Location, 5)
+			print ("NEIGH: ",neigh)
 			for i in neigh:
 				if(len(i)>12 or matchesGST(i)):
 					GST_Value = i
@@ -168,7 +175,7 @@ def findBuyerValues(dictionaryList):
 		PAN_Location = None # Variable to Store the Location of KEY GST
 		# Looking for Key GST in words
 		for w in words:
-			if(re.search("^PAN", w) and isGreater(loc, currentDictionary[w])):
+			if(re.search("^PAN", w) and isBelow(loc, currentDictionary[w])):
 				PAN_Location = currentDictionary[w]
 				break
 		# If Key GST exists
@@ -184,12 +191,13 @@ def findBuyerValues(dictionaryList):
 	return results
 
 def FindPONumber(lod):
-    	dictionary = {}
+	dictionary = {}
 	for currdict in lod:
 		for text in currdict.keys():
 			if (matchesPO(text)):
 				dictionary['PO Number'] = text
-				return dictionary
+				if (text[:2] == "PO"):
+					return dictionary
 	return dictionary
 
 def FindInvNumber(lod):

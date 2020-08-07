@@ -5,8 +5,10 @@ from Deskew.deskewImage import deskewImage
 import cv2
 from Text_Detection.detect_text import convert_crops_to_text
 from Line_Detection.EdgeDetectionAll import EdgeDetectionAll
+from Generate_Data.generate_data import GenerateData
+from Key_Value.findValue import *
 
-fileName = 'im1_full.png'
+fileName = 'im18_full.png'
 
 # Deskewing Image
 print("Started Process....")
@@ -40,3 +42,11 @@ obj = localTextRegion(metaData)
 
 # Converting Crops into text
 convert_crops_to_text()
+
+folder = '../results/crops_localization/'
+lst = GenerateData(folder)
+print(lst)
+print("Find Values: ")
+print(findBuyerValues(lst))
+print(FindPONumber(lst))
+print(FindInvNumber(lst))

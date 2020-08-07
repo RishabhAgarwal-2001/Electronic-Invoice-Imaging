@@ -23,6 +23,7 @@ def findValues(dictionaryList):
 	and values as a list of top and left position in that specific crop
 	'''
 	buyerData = findBuyerValues(dictionaryList)
+	return buyerData
 
 def matchesGST(txt):
 	gstRegEx = "\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{2}[Z]{1}[A-Z\d]{1}"
@@ -160,7 +161,6 @@ def findBuyerValues(dictionaryList):
 		# If Key GST exists
 		if(GST_Location is not None):
 			neigh = wordsNext(currentDictionary, GST_Location, 5)
-			print ("NEIGH: ",neigh)
 			for i in neigh:
 				if(len(i)>12 or matchesGST(i)):
 					GST_Value = i

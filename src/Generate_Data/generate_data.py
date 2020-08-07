@@ -9,7 +9,7 @@ import numpy as np
 import os
 from pytesseract import Output
 from correction import spellCheck
-from findValue import findBuyerValues
+from findValue import *
 
 def hasNumbers(inputString):
     for char in inputString:
@@ -56,5 +56,7 @@ def GenerateData ():
 lst = GenerateData()
 print(lst)
 print("Find Values: ")
-print(findBuyerValues(lst))
+# print(findBuyerValues(lst))
+print(FindPONumber(lst))
+print(FindInvNumber(lst))
 # print(spellCheck('GSTIN'))

@@ -25,8 +25,29 @@ def findValues(dictionaryList):
 	buyerData = findBuyerValues(dictionaryList)
 
 def matchesGST(txt):
-	gstRegEx = "\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}"
+	gstRegEx = "\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{2}[Z]{1}[A-Z\d]{1}"
 	x = re.search(gstRegEx, txt)
+	if(x):
+		return True
+	else:
+		return False
+
+def matchesPO(txt):
+	poRegEx = "^PO\d{7}$"
+	x = re.search(poRegEx, txt)
+	if(x):
+		return True
+	else:
+		poRegEx = "^\d{7}$"
+		x = re.search(poRegEx, txt)
+		if(x):
+			return True
+		else:
+			return False
+
+def matchesInvNo(txt):
+	invRegEx = "^\d{4}$"
+	x = re.search(invRegEx, txt)
 	if(x):
 		return True
 	else:
@@ -60,6 +81,8 @@ def findBuyerValues(dictionaryList):
 	keyWords_to = ["SHIPPED", "SHIP"]
 	keyWords_by = ["BOUGHT"]
 	results = {}
+	results["GST"] = ["", math.inf]
+	results["PAN"] = ["", math.inf]
 	for currentDictionary in dictionaryList:
 
 		# List containing all Words in the given crop
@@ -86,20 +109,26 @@ def findBuyerValues(dictionaryList):
 		# Finding GST Number in the array of words
 		GST_Value = "" # Variable to Store the value of GST Number
 		GST_Value_loc = math.inf # Variable to store the location of GST Number
-		GST_Location = None # Variable to Store the Location of KEY GST
+		GST_Location = [-1, -1] # Variable to Store the Location of KEY GST
 		# Looking for Key GST in words
 		for w in words:
 			if(re.search("^GST", w)):
 				GST_Location = currentDictionary[w]
+				print("Found GST At Location: ", GST_Location)
 				break
 		# If Key GST exists
-		if(GST_Location is not None):
+		if(GST_Location != [-1, -1]):
 			for w in words:
 				if(matchesGST(w) and distance(currentDictionary[w], GST_Location, 2)<GST_Value_loc):
+					print("I am Going In")
 					GST_Value = w
 					GST_Value_loc = distance(currentDictionary[w], GST_Location, 2)
+					print("GST Value: ",GST_Value)
 					print("Distance = ", GST_Value_loc)
-		results["GST"] = [GST_Value, GST_Value_loc]
+			print("GST Value Outside: ", GST_Value)
+			results["GST"] = [GST_Value, GST_Value_loc]
+		# else:
+		# 	results["GST"] = ["", math.inf]
 		# ---------------------------------------------------------------
 
 
@@ -121,10 +150,36 @@ def findBuyerValues(dictionaryList):
 					PAN_Value = w
 					PAN_Value_loc = distance(currentDictionary[w], PAN_Location, 2)
 					print("Distance = ", PAN_Value_loc)
-		results["PAN"] = [PAN_Value, PAN_Value_loc]
+			results["PAN"] = [PAN_Value, PAN_Value_loc]
 		# ---------------------------------------------------------------
 
 	return results
 
-print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50],
-	"PAN":[20, 20], "BNZAA2318J":[20, 25]}]))
+def FindPONumber(lod):
+	dictionary = {}
+	for currdict in lod:
+		for text in currdict.keys():
+			if (matchesPO(text)):
+				dictionary['PO Number'] = text
+				return dictionary
+	return dictionary
+
+def FindInvNumber(lod):
+	dictionary = {}
+	for currdict in lod:
+		for text in currdict.keys():
+			if (text == 'INVOICE'):
+				minDis = math.inf	
+				for text2 in currdict.keys():			
+					if (matchesInvNo(text2) and minDis > distance(currdict[text2], currdict[text], 2)):
+						dictionary['Invoice Number'] = text2
+						minDis = distance(currdict[text2], currdict[text], 2)
+				if (minDis < math.inf):
+					return dictionary
+				continue
+	return dictionary
+
+# print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50],
+	# "PAN":[20, 20], "BNZAA2318J":[20, 25]}]))
+
+# print (matchesGST('07AABBC8888G1AZ1'))

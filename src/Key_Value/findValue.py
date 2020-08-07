@@ -54,6 +54,14 @@ def matchesInvNo(txt):
 	else:
 		return False
 
+def matchesDate(txt):
+	invRegEx = "^([1-9] |1[0-9]| 2[0-9]|3[0-1])(.|-)([1-9] |1[0-2])(.|-|)20[0-9][0-9]$"
+	x = re.search(invRegEx, txt)
+	if(x):
+		return True
+	else:
+		return False
+
 def matchesPAN(txt):
 	panRegEx = "^([A-Z]{5}[0-9]{4}[A-Z]{1})"
 	x = re.search(panRegEx, txt)
@@ -198,6 +206,11 @@ def FindPONumber(lod):
 				dictionary['PO Number'] = text
 				if (text[:2] == "PO"):
 					return dictionary
+				else:
+					listOfWords = wordsNext(currdict, currdict[text], 3)
+					for i in listOfWords:
+    						if (i == 'PO' or i == 'PURCHASE' or i == 'SUPPLIER' or i == 'BUYER'):
+    								return dictionary
 	return dictionary
 
 def FindInvNumber(lod):

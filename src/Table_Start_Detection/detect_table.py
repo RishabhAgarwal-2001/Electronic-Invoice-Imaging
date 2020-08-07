@@ -30,7 +30,7 @@ def detectTable(fileName):
 	'MEASUREMENT', 'SAC', 'BATCH', 'MFG.', 'AMT', 'PRODUCT', 'CESS', 'UOM', 'GROSS', 'TAX', 'SERVICE', 'DISC', 'NOS', 'NOS.',
 	'ITEM', 'DESCRIPTION', 'HSN', 'CATEGORY', 'MRP', 'TOTAL', 'BASIC', 'SELLING']
 
-	img = cv2.imread('/home/this/Flipkart_Challenge/GitHub Repo/Electronic-Invoice-Imaging/images/'+fileName)
+	img = cv2.imread('../images/'+fileName)
 
 	d = pytesseract.image_to_data(img, output_type=Output.DICT)
 

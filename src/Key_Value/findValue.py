@@ -26,8 +26,29 @@ def findValues(dictionaryList):
 	return buyerData
 
 def matchesGST(txt):
-	gstRegEx = "\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}"
+	gstRegEx = "\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{2}[Z]{1}[A-Z\d]{1}"
 	x = re.search(gstRegEx, txt)
+	if(x):
+		return True
+	else:
+		return False
+
+def matchesPO(txt):
+	poRegEx = "^PO\d{7}$"
+	x = re.search(poRegEx, txt)
+	if(x):
+		return True
+	else:
+		poRegEx = "^\d{7}$"
+		x = re.search(poRegEx, txt)
+		if(x):
+			return True
+		else:
+			return False
+
+def matchesInvNo(txt):
+	invRegEx = "^\d{4}$"
+	x = re.search(invRegEx, txt)
 	if(x):
 		return True
 	else:
@@ -129,6 +150,7 @@ def findBuyerValues(dictionaryList):
 		for w in words:
 			if(re.search("^GST", w) and isGreater(loc, currentDictionary[w])):
 				GST_Location = currentDictionary[w]
+				print("Found GST At Location: ", GST_Location)
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
@@ -162,8 +184,31 @@ def findBuyerValues(dictionaryList):
 
 	return results
 
-# dic = [{"CUSTOMER":[10, 10], "18AABCU9603R1ZM":[20, 100], "18AABCU9603R1ZQ":[20, 5], "GSTIN":[12, 50],
-# 	"PAN":[20, 10], "BNZAA2318J":[30, 25]}]
+def FindPONumber(lod):
+    	dictionary = {}
+	for currdict in lod:
+		for text in currdict.keys():
+			if (matchesPO(text)):
+				dictionary['PO Number'] = text
+				return dictionary
+	return dictionary
 
+def FindInvNumber(lod):
+	dictionary = {}
+	for currdict in lod:
+		for text in currdict.keys():
+			if (text == 'INVOICE'):
+				minDis = math.inf	
+				for text2 in currdict.keys():			
+					if (matchesInvNo(text2) and minDis > distance(currdict[text2], currdict[text], 2)):
+						dictionary['Invoice Number'] = text2
+						minDis = distance(currdict[text2], currdict[text], 2)
+				if (minDis < math.inf):
+					return dictionary
+				continue
+	return dictionary
 
-# print(findBuyerValues(dic))
+# print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50],
+	# "PAN":[20, 20], "BNZAA2318J":[20, 25]}]))
+
+# print (matchesGST('07AABBC8888G1AZ1'))

@@ -54,77 +54,115 @@ def distance(point1, point2, choice=1):
 		return min(x, y)
 
 
+# Assuming values in form (left, top)
+def wordsNext(dictionary, location, neighbourCount=1):
+
+	pairs = []
+	for k in dictionary.keys():
+		pairs.append([k, dictionary[k]])
+
+	pairs = sorted(pairs, key = lambda x: (x[1][0], x[1][1]))
+
+	alpha = location[:]
+
+	
+	neigh = []
+	
+	for i in pairs:
+		if(isGreater(alpha, i[1])):
+			neigh.append(i[0])
+
+	return neigh[:neighbourCount]
+
+def isGreater(point1, point2):
+	if(point1[0]-5<point2[0] and point1[1]-5<point2[1]):
+		return True
+	else:
+		return False
+
+
 # Buyer, Customer, Ship to, Billed to, Consignee, Shipped
 def findBuyerValues(dictionaryList):
 	keyWords = ["BUYER", "CUSTOMER", "CONSIGNEE"]
 	keyWords_to = ["SHIPPED", "SHIP"]
 	keyWords_by = ["BOUGHT"]
-	results = {}
-	for currentDictionary in dictionaryList:
+	results = {"GST":"", "PAN":""}
 
+	for currentDictionary in dictionaryList:
 		# List containing all Words in the given crop
 		words = currentDictionary.keys()
+
+		loc = [-1, -1]
 
 		# Checking if the crop contains information about the Buyer
 		valid = False
 		for w in words:
 			if(w.upper() in keyWords):
 				valid = True
+				loc = currentDictionary[w]
 				break
 			if(w.upper() in keyWords_to):
-				if("TO" in words):
-					valid = True
-					break
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 5)
+				for i in neigh:
+					if(re.search("TO", i)):
+						valid = True
+						loc = currentDictionary[w]
+						break
 			if(w.upper() in keyWords_by):
-				if("BY" in words):
-					valid = True
-					break
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 5)
+				for i in neigh:
+					if(re.search("BY", i)):
+						valid = True
+						loc = currentDictionary[w]
+						break
+
 		if(valid==False):
 			continue
+		
 		
 		# ---------------------------------------------------------------
 		# Finding GST Number in the array of words
 		GST_Value = "" # Variable to Store the value of GST Number
-		GST_Value_loc = math.inf # Variable to store the location of GST Number
 		GST_Location = None # Variable to Store the Location of KEY GST
 		# Looking for Key GST in words
 		for w in words:
-			if(re.search("^GST", w)):
+			if(re.search("^GST", w) and isGreater(loc, currentDictionary[w])):
 				GST_Location = currentDictionary[w]
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
-			for w in words:
-				if(matchesGST(w) and distance(currentDictionary[w], GST_Location, 2)<GST_Value_loc):
-					GST_Value = w
-					GST_Value_loc = distance(currentDictionary[w], GST_Location, 2)
-					print("Distance = ", GST_Value_loc)
-		results["GST"] = [GST_Value, GST_Value_loc]
+			neigh = wordsNext(currentDictionary, GST_Location, 5)
+			for i in neigh:
+				if(len(i)>12 or matchesGST(i)):
+					GST_Value = i
+					break
+			results["GST"] = GST_Value
 		# ---------------------------------------------------------------
 
 
 		# ---------------------------------------------------------------
 		# Finding GST Number in the array of words
 		PAN_Value = "" # Variable to Store the value of GST Number
-		PAN_Value_loc = math.inf # Variable to store the location of GST Number
 		PAN_Location = None # Variable to Store the Location of KEY GST
 		# Looking for Key GST in words
 		for w in words:
-			if(re.search("^PAN", w)):
+			if(re.search("^PAN", w) and isGreater(loc, currentDictionary[w])):
 				PAN_Location = currentDictionary[w]
 				break
 		# If Key GST exists
 		if(PAN_Location is not None):
-			print(PAN_Location)
-			for w in words:
-				if(matchesPAN(w) and distance(currentDictionary[w], PAN_Location, 2)<PAN_Value_loc):
-					PAN_Value = w
-					PAN_Value_loc = distance(currentDictionary[w], PAN_Location, 2)
-					print("Distance = ", PAN_Value_loc)
-		results["PAN"] = [PAN_Value, PAN_Value_loc]
+			neigh = wordsNext(currentDictionary, PAN_Location, 5)
+			for i in neigh:
+				if((len(i)>8 and len(i)<10) or matchesPAN(i)):
+					PAN_Value = i
+					break
+			results["PAN"] = PAN_Value
 		# ---------------------------------------------------------------
 
 	return results
 
-print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50],
-	"PAN":[20, 20], "BNZAA2318J":[20, 25]}]))
+dic = [{"CUSTOMER":[10, 10], "18AABCU9603R1ZM":[20, 100], "18AABCU9603R1ZQ":[20, 5], "GSTIN":[12, 50],
+	"PAN":[20, 10], "BNZAA2318J":[30, 25]}]
+
+
+print(findBuyerValues(dic))

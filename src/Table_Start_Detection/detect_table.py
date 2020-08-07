@@ -34,6 +34,7 @@ def detectTable(fileName):
 
 	d = pytesseract.image_to_data(img, output_type=Output.DICT)
 
+
 	text = d['text']
 	top = d['top']
 

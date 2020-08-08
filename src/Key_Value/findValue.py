@@ -413,14 +413,16 @@ def FindDate(lod, dateList):
 				if (text == dateFormat):
 					# print(text)
 					# print(currdict[text])
-					neighbours = wordsNext (currdict, currdict[text], 6)
+					neighbours = wordsNext (currdict, currdict[text], 10)
+					# if (text == 'INVOICE'):
+					# 	print(neighbours)
 					# print(neighbours)
 					date = ''
 					for i in neighbours:
 						if (matchesDate(i)):
 							date = i
 					if (date != ''):
-						if (text == 'DATED'):
+						if (text == 'DATED' or text == 'DATE'):
 							dictionary[text] = date
 						else:
 							dictionary[text+' DATE'] = date
@@ -433,7 +435,7 @@ def FindCurrency(lod):
 			if (text == 'CURRENCY'):
 				# print(text)
 				# print(currdict[text])
-				neighbours = wordsNext (currdict, currdict[text], 6)
+				neighbours = wordsNext (currdict, currdict[text], 10)
 				# print(neighbours)
 				for i in neighbours:
 					if (i == 'USD' or i == 'INR'):

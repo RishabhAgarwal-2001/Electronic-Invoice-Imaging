@@ -10,7 +10,8 @@ from Key_Value.findValue import *
 import xlwt
 from pdf2image import convert_from_path
 
-fileName = 'Sample24.pdf'
+#Wrong Meta data on sample invoices 1, 3, 24, 25
+fileName = 'Sample1.pdf'
 
 images = convert_from_path('../images/'+fileName)
 images[0].save("../images/input.png")
@@ -53,14 +54,24 @@ convert_crops_to_text()
 folder = '../results/crops_localization/'
 print("Generating Data...")
 lst = GenerateData(folder)
+folder = '../results/crops_line/'
+lst2 = GenerateData(folder)
 # print(lst)
 print("Finding Values...")
-finalDict = findValues(lst)
-finalDict.update(FindPONumber(lst))
-finalDict.update(FindInvNumber(lst))
-dateList = ['LR', 'INVOICE', 'DA', 'DELIVERY', 'PURCHASE', 'PO', 'DUE', 'LOA', 'ORDER', 'PICKING', 'PASS', 'CHALLAN', 'DISPATCH', 'SO', 'DATED']
-finalDict.update(FindDate(lst, dateList))
-finalDict.update(FindCurrency(lst))
+finalDict1 = findValues(lst)
+finalDict1.update(FindPONumber(lst))
+finalDict1.update(FindInvNumber(lst))
+dateList = ['LR', 'INVOICE', 'DA', 'DELIVERY', 'PURCHASE', 'PO', 'DUE', 'LOA', 'ORDER', 'PICKING', 'PASS', 'CHALLAN', 'DISPATCH', 'SO', 'DATED', 'REF']
+finalDict1.update(FindDate(lst, dateList))
+finalDict1.update(FindCurrency(lst))
+
+finalDict2 = findValues(lst2)
+finalDict2.update(FindPONumber(lst2))
+finalDict2.update(FindInvNumber(lst2))
+finalDict2.update(FindDate(lst2, dateList))
+finalDict2.update(FindCurrency(lst2))
+
+finalDict = {**finalDict1, **finalDict2} 
 print("Final Dictionary: ",finalDict)
 
 print("Creating Excel Sheet...")

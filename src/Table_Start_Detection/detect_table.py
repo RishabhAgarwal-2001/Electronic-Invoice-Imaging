@@ -2,6 +2,10 @@ import pytesseract
 from pytesseract import Output
 import cv2
 import numpy as np
+try:
+	from PIL import Image
+except ImportError:
+	import Image
 
 
 def levenshteinDistance(s1, s2):
@@ -26,14 +30,14 @@ def myround(x, base=50):
 def detectTable(fileName):
 	header_keyWords = ['MATERIAL', 'DESCRIPTION', 'HSN', 'QTY', 'QUANTITY', 'UNIT PRICE', 'TOTAL', 'DISCOUNT', 'TAXABLE VALUE',
 	'AMOUNT', 'IGST', 'AMT', 'S. NO.', 'RATE', 'CGST', 'SGST', 'UGST', 'ITEM', 'CODE', 'CATEGORY', 'SIZE', 'PC', 'PCS', 'PIECES',
-	'MRP', 'DISC.', 'BASIC', 'SELLING', 'PRICE', 'VALUE', 'INVOICE', 'GST', 'GOODS', 'PER', 'SERIAL', 'NUMBER', 'NO', 'TAX', 'TAXABLE',
-	'MEASUREMENT', 'SAC', 'BATCH', 'MFG.', 'AMT', 'PRODUCT', 'CESS', 'UOM', 'GROSS', 'TAX', 'SERVICE', 'DISC', 'NOS', 'NOS.',
-	'ITEM', 'DESCRIPTION', 'HSN', 'CATEGORY', 'MRP', 'TOTAL', 'BASIC', 'SELLING']
+	'MRP', 'DISC.', 'BASIC', 'SELLING', 'PRICE', 'VALUE', 'INVOICE', 'GST', 'GOODS', 'PER', 'SERIAL', 'NUMBER', 'TAXABLE',
+	'MEASUREMENT', 'SAC', 'BATCH', 'MFG.', 'AMT', 'PRODUCT', 'CESS', 'UOM', 'GROSS', 'SERVICE', 'DISC', 'NOS', 'NOS.',
+	'ITEM', 'DESCRIPTION', 'HSN', 'CATEGORY', 'MRP', 'TOTAL', 'BASIC', 'SELLING', 'ISBN', 'TITLE', 'AUTHOR', 'PRICE', 'DISC', 'AMT', 'ORD', 'BNDG', 'NET RATE', 'NET', 'VAL']
 
-	img = cv2.imread('../images/'+fileName)
-
-	d = pytesseract.image_to_data(img, output_type=Output.DICT)
-
+	# img = cv2.imread('../images/'+fileName)
+	img = Image.open('../images/'+fileName)
+	d = pytesseract.image_to_data(img, output_type=Output.DICT, config='--psm 6')
+	print("d: ", d)
 
 	text = d['text']
 	top = d['top']
@@ -44,6 +48,8 @@ def detectTable(fileName):
 
 	for i in range(len(text)):
 		currentText = text[i].upper()
+		if (currentText == 'DATE'):
+			continue
 		currrenTop = top[i]
 		flag = False
 		for words in header_keyWords:
@@ -54,7 +60,8 @@ def detectTable(fileName):
 			tx.append(currentText)
 			pos.append(currrenTop)
 
-
+	print(tx)
+	print(pos)
 	pos_copy = pos[:]
 
 	for i in range(len(pos)):

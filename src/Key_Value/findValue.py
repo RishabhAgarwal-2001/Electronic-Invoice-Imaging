@@ -199,10 +199,17 @@ def findBillerValue(dictionaryList):
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
-			neigh = wordsNext(currentDictionary, GST_Location, 15)
+			neigh = wordsNext(currentDictionary, GST_Location, 25)
 			print(neigh)
 			for i in neigh:
 				if(len(i) > 12 or matchesGST(i)):
+					GST_Value = i
+					break
+			results["BILLED_GST"] = GST_Value
+		else:
+			neigh = wordsNext(currentDictionary, loc, 25)
+			for i in neigh:
+				if(len(i)>12 or matchesGST(i)):
 					GST_Value = i
 					break
 			results["BILLED_GST"] = GST_Value
@@ -219,7 +226,7 @@ def findBillerValue(dictionaryList):
 				break
 		# If Key GST exists
 		if(PAN_Location is not None):
-			neigh = wordsNext(currentDictionary, PAN_Location, 5)
+			neigh = wordsNext(currentDictionary, PAN_Location, 20)
 			for i in neigh:
 				if((len(i) > 8 and len(i)<10 and NoOfDigits(i) > 2 and NoOfDigits(i) < 7) or matchesPAN(i)):
 					PAN_Value = i
@@ -260,7 +267,7 @@ def findBillerValue(dictionaryList):
 
 # Buyer, Customer, Ship to, Billed to, Consignee, Shipped
 def findBuyerValues(dictionaryList):
-	keyWords = ["CUSTOMER", "CONSIGNEE", "SHIPPING", "SHIP-TO", "SUPPLY"]
+	keyWords = ["CUSTOMER", "CONSIGNEE", "SHIPPING", "SHIP-TO", "SUPPLY", "SHIP-TO:"]
 	keyWords_to = ["SHIPPED", "SHIP"]
 	keyWords_by = ["BOUGHT"]
 	
@@ -315,8 +322,15 @@ def findBuyerValues(dictionaryList):
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
-			neigh = wordsNext(currentDictionary, GST_Location, 10)
+			neigh = wordsNext(currentDictionary, GST_Location, 25)
 			print(neigh)
+			for i in neigh:
+				if(len(i)>12 or matchesGST(i)):
+					GST_Value = i
+					break
+			results["SHIPPED_GST"] = GST_Value
+		else:
+			neigh = wordsNext(currentDictionary, loc, 25)
 			for i in neigh:
 				if(len(i)>12 or matchesGST(i)):
 					GST_Value = i
@@ -336,7 +350,7 @@ def findBuyerValues(dictionaryList):
 				break
 		# If Key GST exists
 		if(PAN_Location is not None):
-			neigh = wordsNext(currentDictionary, PAN_Location, 5)
+			neigh = wordsNext(currentDictionary, PAN_Location, 20)
 			for i in neigh:
 				if((len(i)>8 and len(i)<10 and NoOfDigits(i) > 2 and NoOfDigits(i) < 7) or matchesPAN(i)):
 					PAN_Value = i

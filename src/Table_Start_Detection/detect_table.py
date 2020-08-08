@@ -37,8 +37,7 @@ def detectTable(fileName):
 	# img = cv2.imread('../images/'+fileName)
 	img = Image.open('../images/'+fileName)
 	d = pytesseract.image_to_data(img, output_type=Output.DICT, config='--psm 6')
-	print("d: ", d)
-
+	
 	text = d['text']
 	top = d['top']
 
@@ -60,8 +59,6 @@ def detectTable(fileName):
 			tx.append(currentText)
 			pos.append(currrenTop)
 
-	print(tx)
-	print(pos)
 	pos_copy = pos[:]
 
 	for i in range(len(pos)):

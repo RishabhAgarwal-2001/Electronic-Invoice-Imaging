@@ -375,7 +375,7 @@ def FindPONumber(lod):
 	for currdict in lod:
 		for text in currdict.keys():
 			if (matchesPO(text)):
-				dictionary['PO Number'] = text
+				dictionary['PO NUMBER'] = text
 				if (text[:2] == "PO"):
 					return dictionary
 				else:
@@ -393,7 +393,7 @@ def FindInvNumber(lod):
 				minDis = math.inf	
 				for text2 in currdict.keys():			
 					if (matchesInvNo(text2) and minDis > distance(currdict[text2], currdict[text], 2)):
-						dictionary['Invoice Number'] = text2
+						dictionary['INVOICE NUMBER'] = text2
 						minDis = distance(currdict[text2], currdict[text], 2)
 				if (minDis < math.inf):
 					return dictionary

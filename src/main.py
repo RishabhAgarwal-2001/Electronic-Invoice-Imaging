@@ -7,6 +7,7 @@ from Text_Detection.detect_text import convert_crops_to_text
 from Line_Detection.EdgeDetectionAll import EdgeDetectionAll
 from Generate_Data.generate_data import GenerateData
 from Key_Value.findValue import *
+import xlwt
 
 fileName = 'im11_full.png'
 
@@ -44,12 +45,26 @@ obj = localTextRegion(metaData)
 convert_crops_to_text()
 
 folder = '../results/crops_localization/'
+print("Generating Data...")
 lst = GenerateData(folder)
 # print(lst)
-print("Find Values: ")
-print(findValues(lst))
-print(FindPONumber(lst))
-print(FindInvNumber(lst))
+print("Finding Values...")
+finalDict = findValues(lst)
+finalDict.update(FindPONumber(lst))
+finalDict.update(FindInvNumber(lst))
 dateList = ['LR', 'INVOICE', 'DA', 'DELIVERY', 'PURCHASE', 'PO', 'DUE', 'LOA', 'ORDER', 'PICKING', 'PASS', 'CHALLAN', 'DISPATCH', 'SO', 'DATED']
-print(FindDate(lst, dateList))
-print(FindCurrency(lst))
+finalDict.update(FindDate(lst, dateList))
+finalDict.update(FindCurrency(lst))
+print("Final Dictionary: ",finalDict)
+
+print("Creating Excel Sheet...")
+wb = xlwt.Workbook()
+ws = wb.add_sheet('Invoice Sheet')
+row = 0
+column = 0
+for i in finalDict.keys():
+    ws.write(row, column, i)
+    ws.write(row, column+1, finalDict[i])
+    row += 1
+wb.save('Invoice_Sheet.xlsx')
+print ('Wrote Invoice_Sheet.xlsx')

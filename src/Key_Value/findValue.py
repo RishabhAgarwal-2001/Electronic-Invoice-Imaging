@@ -24,7 +24,7 @@ def findValues(dictionaryList):
 	'''
 	for i in dictionaryList:
 		print(i)
-		print()
+	print()
 	results = {}
 	buyerData = findBuyerValues(dictionaryList)
 	billToData = findBillerValue(dictionaryList)
@@ -148,10 +148,15 @@ def checkState(word):
 			return s.upper()
 	return ""
 
-
+def NoOfDigits(inputString):
+	count = 0
+	for char in inputString:
+		if (char.isdigit()):
+			count += 1
+	return count
 
 def findBillerValue(dictionaryList):
-	keyWords = ["BILL-TO"]
+	keyWords = ["BILL-TO", "BUYER", "BILLING"]
 	keyWords_to = ["BILL", "BILLED", "SOLD"]
 	results = {"BILLED_GST": "", "BILLED_PAN": "", "BILLED_STATE": ""}
 	for currentDictionary in dictionaryList:
@@ -211,7 +216,7 @@ def findBillerValue(dictionaryList):
 		if(PAN_Location is not None):
 			neigh = wordsNext(currentDictionary, PAN_Location, 5)
 			for i in neigh:
-				if((len(i) > 8 and len(i)<10) or matchesPAN(i)):
+				if((len(i) > 8 and len(i)<10 and NoOfDigits(i) > 2 and NoOfDigits(i) < 7) or matchesPAN(i)):
 					PAN_Value = i
 					break
 			results["BILLED_PAN"] = PAN_Value
@@ -226,6 +231,14 @@ def findBillerValue(dictionaryList):
 			if(re.search("STATE", w) and isBelow(loc, currentDictionary[w])):
 				STATE_Location = currentDictionary[w]
 				break
+			if(re.search("PLACE", w)):
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 7)
+				for x in neigh:
+					if(re.search("SUPPLY", x.upper()) or re.search("DELIVER", x.upper())):
+						STATE_Location = currentDictionary[w]
+						break
+				if(STATE_Location is not None):
+					break
 		# If Key GST exists
 			if(STATE_Location is not None):
 				neigh = wordsNext(currentDictionary, STATE_Location, 7)
@@ -242,7 +255,7 @@ def findBillerValue(dictionaryList):
 
 # Buyer, Customer, Ship to, Billed to, Consignee, Shipped
 def findBuyerValues(dictionaryList):
-	keyWords = ["BUYER", "CUSTOMER", "CONSIGNEE"]
+	keyWords = ["CUSTOMER", "CONSIGNEE", "SHIPPING", "SHIP-TO"]
 	keyWords_to = ["SHIPPED", "SHIP"]
 	keyWords_by = ["BOUGHT"]
 	
@@ -256,6 +269,11 @@ def findBuyerValues(dictionaryList):
 		# Checking if the crop contains information about the Buyer
 		valid = False
 		for w in words:
+			for x in keyWords:
+				if (re.search(x, w)):
+					valid = True
+					loc = currentDictionary[w]
+					break
 			if(w.upper() in keyWords):
 				valid = True
 				loc = currentDictionary[w]
@@ -315,7 +333,7 @@ def findBuyerValues(dictionaryList):
 		if(PAN_Location is not None):
 			neigh = wordsNext(currentDictionary, PAN_Location, 5)
 			for i in neigh:
-				if((len(i)>8 and len(i)<10) or matchesPAN(i)):
+				if((len(i)>8 and len(i)<10 and NoOfDigits(i) > 2 and NoOfDigits(i) < 7) or matchesPAN(i)):
 					PAN_Value = i
 					break
 			results["SHIPPED_PAN"] = PAN_Value
@@ -388,16 +406,19 @@ def FindDate(lod, dateList):
 		for text in currdict.keys():
 			for dateFormat in dateList:
 				if (text == dateFormat):
-					print(text)
-					print(currdict[text])
+					# print(text)
+					# print(currdict[text])
 					neighbours = wordsNext (currdict, currdict[text], 6)
-					print(neighbours)
+					# print(neighbours)
 					date = ''
 					for i in neighbours:
 						if (matchesDate(i)):
 							date = i
 					if (date != ''):
-						dictionary[text+' DATE'] = date
+						if (text == 'DATED'):
+							dictionary[text] = date
+						else:
+							dictionary[text+' DATE'] = date
 	return dictionary
 
 def FindCurrency(lod):

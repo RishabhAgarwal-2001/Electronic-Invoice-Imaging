@@ -8,6 +8,11 @@ import os
 from pytesseract import Output
 from Spell_Checker.correction import spellCheck
 
+try:
+	from PIL import Image
+except ImportError:
+	import Image
+
 def hasNumbers(inputString):
     for char in inputString:
         if (char.isdigit()):
@@ -25,7 +30,11 @@ def GenerateData (folder):
     # for x in range(n)
     #     dictlist = [dict()]
     for file in os.listdir(folder):
-        img = cv2.imread(folder+file)
+        # img = cv2.imread(folder+file)
+        # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+        # img = clahe.apply(img)
+        img = Image.open(folder+file)
         tempdict = pytesseract.image_to_data(img, output_type=Output.DICT) 
         newdict = {}
         texts = tempdict['text']
@@ -44,6 +53,8 @@ def GenerateData (folder):
                 continue
             text = text.upper()
             text = spellCheck(text)
+            if (text == "‘BIR"):
+                text = "BILL"
             newdict[text] = [tops[i], lefts[i]]
         dictList.append(newdict)
             

@@ -11,11 +11,11 @@ def thresh(Image, org_image):
 	# cv2.imshow("Image After imclose", Image)
 	
 	# Converting image in hsv and applying threshold
-	hsv = cv2.cvtColor(Image, cv2.COLOR_BGR2HSV)
-	lower = np.array([0, 0, 218])
-	upper = np.array([157, 54, 255])
-	mask = cv2.inRange(hsv, lower, upper)
-
+	# hsv = cv2.cvtColor(Image, cv2.COLOR_BGR2HSV)
+	# lower = np.array([0, 0, 218])
+	# upper = np.array([157, 54, 255])
+	# mask = cv2.inRange(hsv, lower, upper)
+	mask = Image
 
 
 

@@ -52,5 +52,3 @@ def spellCheck(text):
 #         text = text.split()
 #         for i in text:
 #             print(correction(i.upper()))
-
-# print(correction("CONSIGNAE'S"))

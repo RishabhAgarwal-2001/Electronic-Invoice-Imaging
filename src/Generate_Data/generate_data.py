@@ -35,7 +35,7 @@ def GenerateData (folder):
         # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
         # img = clahe.apply(img)
         img = Image.open(folder+file)
-        tempdict = pytesseract.image_to_data(img, output_type=Output.DICT, config='--psm 4') 
+        tempdict = pytesseract.image_to_data(img, output_type=Output.DICT, config='--psm 6') 
         newdict = {}
         texts = tempdict['text']
         tops = tempdict['top']

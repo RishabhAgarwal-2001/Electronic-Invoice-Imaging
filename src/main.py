@@ -7,13 +7,19 @@ from Text_Detection.detect_text import convert_crops_to_text
 from Line_Detection.EdgeDetectionAll import EdgeDetectionAll
 from Generate_Data.generate_data import GenerateData
 from Key_Value.findValue import *
+from pdf2image import convert_from_path
 
-fileName = 'im11_full.png'
+fileName = 'Sample24.pdf'
+
+images = convert_from_path('../images/'+fileName)
+images[0].save("../images/input.png")
+
+fileName = "input.png"
 
 # Deskewing Image
 print("Started Process....")
 print("Deskewing Image....")
-image = cv2.imread('../images/'+fileName)
+image = cv2.imread('../images/input.png')
 deskewImage(image)
 print("Deskewing Completed!!!")
 

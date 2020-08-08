@@ -173,9 +173,12 @@ def findBillerValue(dictionaryList):
 				loc = currentDictionary[w]
 				break
 			if(w.upper() in keyWords_to):
-				neigh = wordsNext(currentDictionary, currentDictionary[w], 5)
+				print("Found Something Here ", w.upper())
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 10)
+				print(neigh)
 				for i in neigh:
 					if(re.search("TO", i)):
+						print("Found TO")
 						valid = True
 						loc = currentDictionary[w]
 						break
@@ -192,10 +195,12 @@ def findBillerValue(dictionaryList):
 		for w in words:
 			if((re.search("^TIN", w) or re.search("^GST", w) or re.search("^STI", w)) and isBelow(loc, currentDictionary[w])):
 				GST_Location = currentDictionary[w]
+				print("FOUnd GST at ", GST_Location)
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
-			neigh = wordsNext(currentDictionary, GST_Location, 5)
+			neigh = wordsNext(currentDictionary, GST_Location, 15)
+			print(neigh)
 			for i in neigh:
 				if(len(i) > 12 or matchesGST(i)):
 					GST_Value = i
@@ -232,7 +237,7 @@ def findBillerValue(dictionaryList):
 				STATE_Location = currentDictionary[w]
 				break
 			if(re.search("PLACE", w)):
-				neigh = wordsNext(currentDictionary, currentDictionary[w], 7)
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 20)
 				for x in neigh:
 					if(re.search("SUPPLY", x.upper()) or re.search("DELIVER", x.upper())):
 						STATE_Location = currentDictionary[w]
@@ -241,7 +246,7 @@ def findBillerValue(dictionaryList):
 					break
 		# If Key GST exists
 			if(STATE_Location is not None):
-				neigh = wordsNext(currentDictionary, STATE_Location, 7)
+				neigh = wordsNext(currentDictionary, STATE_Location, 20)
 				for i in neigh:
 					if(checkState(i)!=''):
 						STATE_Value = checkState(i)
@@ -255,7 +260,7 @@ def findBillerValue(dictionaryList):
 
 # Buyer, Customer, Ship to, Billed to, Consignee, Shipped
 def findBuyerValues(dictionaryList):
-	keyWords = ["CUSTOMER", "CONSIGNEE", "SHIPPING", "SHIP-TO"]
+	keyWords = ["CUSTOMER", "CONSIGNEE", "SHIPPING", "SHIP-TO", "SUPPLY"]
 	keyWords_to = ["SHIPPED", "SHIP"]
 	keyWords_by = ["BOUGHT"]
 	
@@ -349,7 +354,7 @@ def findBuyerValues(dictionaryList):
 				STATE_Location = currentDictionary[w]
 				break
 			if(re.search("PLACE", w)):
-				neigh = wordsNext(currentDictionary, currentDictionary[w], 7)
+				neigh = wordsNext(currentDictionary, currentDictionary[w], 20)
 				for x in neigh:
 					if(re.search("SUPPLY", x.upper()) or re.search("DELIVER", x.upper())):
 						STATE_Location = currentDictionary[w]
@@ -359,7 +364,7 @@ def findBuyerValues(dictionaryList):
 		# If Key GST exists
 		if(STATE_Location is not None):
 			print("State Found--------")
-			neigh = wordsNext(currentDictionary, STATE_Location, 7)
+			neigh = wordsNext(currentDictionary, STATE_Location, 20)
 			print(neigh)
 			for i in neigh:
 				if(checkState(i) != ''):

@@ -103,14 +103,13 @@ with yaspin(text=" ", color="yellow").bouncingBar as spinner:
 	    ws.write(row, column, i)
 	    ws.write(row, column+1, finalDict[i])
 	    row += 1
-	wb.save('Invoice_Sheet.xlsx')
 	spinner.hide()
-	print ('Wrote Invoice_Sheet.xlsx')
+	# print ('Wrote Invoice_Sheet.xlsx')
 	spinner.show()
 	cut_rejoin()
 	image_2_hocr()
-	hocr2table()
-
+	hocr2table(ws, row)
+	wb.save('Invoice_Sheet.xlsx')
 	# Add Ouput Path to Excel Sheet
 	# wb.save(output_path + "/Invoice_Sheet.xls")
 

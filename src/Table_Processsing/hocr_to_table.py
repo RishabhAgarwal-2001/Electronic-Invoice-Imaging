@@ -2,9 +2,9 @@ import xlwt
 from xlwt import Workbook 
 import xlrd
   
-def hocr2table():
-    wb = Workbook() 
-    sheet1 = wb.add_sheet('Sheet 1') 
+def hocr2table(sheet1, row):
+    # wb = Workbook() 
+    # sheet1 = wb.add_sheet('Sheet 1') 
 
     target=open("../results/Table_Processing_Data/IB1.txt","w")
     file=open("../results/hocr_opt.html","r")
@@ -152,7 +152,7 @@ def hocr2table():
 
     i=0
     for itr in range (0,len(text[0])):
-        sheet1.write(0,i,text[0][itr][1:])
+        sheet1.write(row,i,text[0][itr][1:])
         i=i+1
 
     # for j in range (1,len(d2)):
@@ -211,22 +211,22 @@ def hocr2table():
         for itr in range(len(text[j])):
             if cell>=len(boundaries)-1:
                 try:
-                    sheet1.write(j,cellmax,text[j][itr][1:])
+                    sheet1.write(row+j,cellmax,text[j][itr][1:])
                 except:
                     cellmax+=1
-                    sheet1.write(j,cellmax,text[j][itr][1:])
+                    sheet1.write(row+j,cellmax,text[j][itr][1:])
                 continue
             while cell<len(boundaries)-1 and (int(d2[j][itr])>int(boundaries[cell+1]) or (int(d2[j][itr])==int(boundaries[cell+1])  and itr!=0)):
                 cell=cell+1
             att=cell
             while True:
                 try:
-                    sheet1.write(j,att,text[j][itr][1:])
+                    sheet1.write(row+j,att,text[j][itr][1:])
                     break
                 except:
                     att+=1
 
-    wb.save('../results/final_8.xlsx')
+    # wb.save('../results/final_8.xlsx')
 
 
 # cell=0

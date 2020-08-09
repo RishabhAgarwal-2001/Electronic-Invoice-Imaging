@@ -5,10 +5,14 @@ USER GUIDE
 =================================================================================
 ## 1) Installation:
 Following are the Command Line Instructions to be run on a Linux Based OS to setup your system for the Software-
- ``` virtualenv venv ``` 
- ``` source venv/bin/activate ``` 
- ``` git clone https://github.com/RishabhAgarwal-2001/Electronic-Invoice-Imaging.git ```
- ``` pip install -r requirements.txt ```
+
+``` virtualenv venv ``` 
+
+``` source venv/bin/activate ``` 
+
+``` git clone https://github.com/RishabhAgarwal-2001/Electronic-Invoice-Imaging.git ```
+
+``` pip install -r requirements.txt ```
 
 ## (2) Usage:
 Navigate to “src” folder and type in the following command to test on a pdf of your choice-

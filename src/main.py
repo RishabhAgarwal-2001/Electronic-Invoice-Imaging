@@ -14,14 +14,23 @@ from yaspin import yaspin
 from Table_Processsing.image_cut_and_rejoin import cut_rejoin
 from Table_Processsing.image_to_hocr import image_2_hocr
 from Table_Processsing.hocr_to_table import hocr2table
+import argparse
 
 
 
 with yaspin(text=" ", color="yellow").bouncingBar as spinner:
-	#Wrong Meta data on sample invoices 1, 3, 24, 25
-	fileName = 'Sample5.pdf'
 
-	images = convert_from_path('../images/'+fileName)
+	parser = argparse.ArgumentParser()
+
+	parser.add_argument("-i", "--input", required=True, help="path to input pdf")
+	parser.add_argument("-o", "--output", required=True,
+						help="path to output spreadSheet")
+	args = vars(parser.parse_args())
+
+	pdf_path = args["input"]
+	output_path = args["output"]
+
+	images = convert_from_path(pdf_path)
 	images[0].save("../images/input.png")
 
 	fileName = "input.png"

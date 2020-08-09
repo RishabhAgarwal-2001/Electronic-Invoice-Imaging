@@ -111,4 +111,7 @@ with yaspin(text=" ", color="yellow").bouncingBar as spinner:
 	image_2_hocr()
 	hocr2table()
 
+	# Add Ouput Path to Excel Sheet
+	# wb.save(output_path + "/Invoice_Sheet.xls")
+
 	spinner.ok("✅ EXCEL SHEET GENERATED")

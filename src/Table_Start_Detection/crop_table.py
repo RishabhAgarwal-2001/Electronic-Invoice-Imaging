@@ -17,8 +17,8 @@ def emptyFolder():
 
 def cropTable(image, position):
 	emptyFolder()
-	metaData = image[:position, :]
-	table = image[position:, :]
+	metaData = image[:position+20, :]
+	table = image[position-20:, :]
 	crop_folder = '../results/table_meta_data/'
 	metaDataFile = crop_folder + "metaData"+".png"
 	tableFile = crop_folder + "table"+".png"

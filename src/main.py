@@ -11,10 +11,15 @@ import xlwt
 from pdf2image import convert_from_path
 import time
 from yaspin import yaspin
+from Table_Processsing.image_cut_and_rejoin import cut_rejoin
+from Table_Processsing.image_to_hocr import image_2_hocr
+from Table_Processsing.hocr_to_table import hocr2table
 
-with yaspin(text=" ", color="yellow") as spinner:
+
+
+with yaspin(text=" ", color="yellow").bouncingBar as spinner:
 	#Wrong Meta data on sample invoices 1, 3, 24, 25
-	fileName = 'Sample16.pdf'
+	fileName = 'Sample5.pdf'
 
 	images = convert_from_path('../images/'+fileName)
 	images[0].save("../images/input.png")
@@ -22,19 +27,18 @@ with yaspin(text=" ", color="yellow") as spinner:
 	fileName = "input.png"
 
 	# Deskewing Image
-	print("Started Process....")
-	print("Deskewing Image....")
 	image = cv2.imread('../images/input.png')
 	deskewImage(image)
-	print("Deskewing Completed!!!")
 
 
 	# Detecting and Separating MetaData and Table out of the invoice Image
-	print("Table and Meta Data Separation Started...")
+	# print("Table and Meta Data Separation Started...")
 	tablePosition = detectTable(fileName)
 	image = cv2.imread('../results/deskew_image/image.png')
 	cropTable(image, tablePosition)
-	print("Table and Meta Data Separation Completed!!!\n")
+	# spinner.hide()
+	# print("Table and Meta Data Separation Completed!!!\n")
+	# spinner.show()
 
 
 	# Reading in the metaData and Table Image
@@ -44,15 +48,19 @@ with yaspin(text=" ", color="yellow") as spinner:
 	table = cv2.imread(path_to_table)
 
 	# Cropping Based on Lines
-	print("Cropping Meta Data Image Based on Horizontal And Vertical Lines...")
+	# print("Cropping Meta Data Image Based on Horizontal And Vertical Lines...")
 	EdgeDetectionAll(path_to_meta_data, False)
-	print("Completed!!!")
+	
 
 	# Separating Meta Data Regions
 	obj = localTextRegion(metaData)
 
 	# Converting Crops into text
 	convert_crops_to_text()
+
+	spinner.hide()
+	print("Preprocessing Completed!!!")
+	spinner.show()
 
 	folder = '../results/crops_localization/'
 	print("Generating Data...")
@@ -75,7 +83,7 @@ with yaspin(text=" ", color="yellow") as spinner:
 	finalDict2.update(FindCurrency(lst2))
 
 	finalDict = {**finalDict1, **finalDict2} 
-	print("Final Dictionary: ",finalDict)
+	# print("Final Dictionary: ",finalDict)
 
 	print("Creating Excel Sheet...")
 	wb = xlwt.Workbook()
@@ -87,8 +95,11 @@ with yaspin(text=" ", color="yellow") as spinner:
 	    ws.write(row, column+1, finalDict[i])
 	    row += 1
 	wb.save('Invoice_Sheet.xlsx')
+	spinner.hide()
 	print ('Wrote Invoice_Sheet.xlsx')
-
-
+	spinner.show()
+	cut_rejoin()
+	image_2_hocr()
+	hocr2table()
 
 	spinner.ok("✅ EXCEL SHEET GENERATED")

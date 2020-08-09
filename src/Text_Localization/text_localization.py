@@ -12,8 +12,8 @@ class localTextRegion:
 		c = 1
 		crop_folder = "../results/crops_line/"
 		for filename in os.listdir(crop_folder):
-			sys.stdout.write("\rProcessing: {}/{} Completed".format(c, len(os.listdir(crop_folder))))
-			sys.stdout.flush()
+			# sys.stdout.write("\rProcessing: {}/{} Completed".format(c, len(os.listdir(crop_folder))))
+			# sys.stdout.flush()
 			file_path = os.path.join(crop_folder, filename)
 			self.image = cv2.imread(file_path)
 			self.image_copy = self.image.copy()

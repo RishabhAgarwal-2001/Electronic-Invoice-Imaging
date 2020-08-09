@@ -28,8 +28,7 @@ def convert_crops_to_text():
 
 	clearTextFolder()
 
-	print("Converting Crops to Text...")
-
+	
 	crop_folder = '../results/crops_localization/'
 	text_folder = '../results/crops_text/'
 
@@ -41,4 +40,4 @@ def convert_crops_to_text():
 		file.write(text)
 		file.close()
 
-	print("Conversion Completed... Results in results/crops_text !!!")
+	# print("Conversion Completed... Results in results/crops_text !!!")

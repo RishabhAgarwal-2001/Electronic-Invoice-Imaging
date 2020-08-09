@@ -22,9 +22,9 @@ def findValues(dictionaryList):
 	Input Parameter: A List of Dictionary, where each dictionary has keys as corrected words
 	and values as a list of top and left position in that specific crop
 	'''
-	for i in dictionaryList:
-		print(i)
-	print()
+	# for i in dictionaryList:
+	# 	print(i)
+	# print()
 	results = {}
 	buyerData = findBuyerValues(dictionaryList)
 	billToData = findBillerValue(dictionaryList)
@@ -77,7 +77,7 @@ def matchesPAN(txt):
 		return False
 
 def distance(point1, point2, choice=1):
-	print(point1, point2)
+	# print(point1, point2)
 	if(choice==1):
 		return abs(point1[0]-point2[0]) + abs(point1[1]-point2[1])
 	elif(choice==2):
@@ -318,12 +318,12 @@ def findBuyerValues(dictionaryList):
 			# print("W: ",w, currentDictionary[w])
 			if((re.search("^TIN", w) or re.search("^GST", w) or re.search("^STI", w)) and isBelow(loc, currentDictionary[w])):
 				GST_Location = currentDictionary[w]
-				print("Found GST At Location: ", GST_Location)
+				# print("Found GST At Location: ", GST_Location)
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
 			neigh = wordsNext(currentDictionary, GST_Location, 25)
-			print(neigh)
+			# print(neigh)
 			for i in neigh:
 				if(len(i)>12 or matchesGST(i)):
 					GST_Value = i
@@ -377,9 +377,9 @@ def findBuyerValues(dictionaryList):
 					break
 		# If Key GST exists
 		if(STATE_Location is not None):
-			print("State Found--------")
+			# print("State Found--------")
 			neigh = wordsNext(currentDictionary, STATE_Location, 20)
-			print(neigh)
+			# print(neigh)
 			for i in neigh:
 				if(checkState(i) != ''):
 					STATE_Value = checkState(i)

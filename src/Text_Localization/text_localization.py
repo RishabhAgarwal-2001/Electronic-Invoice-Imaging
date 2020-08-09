@@ -36,7 +36,7 @@ class localTextRegion:
 			self.dilated_mask, self.grouped_image, self.boundingBoxes = thresh(self.mask, self.image)
 			self.counter = createCrops(self.image_copy, self.boundingBoxes, self.counter)
 			c = c + 1
-		print()
+		# print()
 
 		# self.image = image
 		# self.image_copy = image.copy()

@@ -7,7 +7,7 @@ def hocr2table(sheet1, row):
     # sheet1 = wb.add_sheet('Sheet 1') 
 
     target=open("../results/Table_Processing_Data/IB1.txt","w")
-    file=open("../results/hocr_opt.html","r")
+    file=open("../results/opt.html","r")
 
 
     for line in file:
@@ -82,7 +82,7 @@ def hocr2table(sheet1, row):
 
 
     data.sort(key = lambda x: x[2])
-    print("Data:")
+    # print("Data:")
 
     file.close()
     d2=[]
@@ -105,8 +105,8 @@ def hocr2table(sheet1, row):
     lmno=[]
     r_bounds=[]
     boun_itr=0
-    while len(d2[boun_itr])<3:
-        boun_itr+=1
+    # while len(d2[boun_itr])<3:
+    #     boun_itr+=1
 
     for i in range (len(data[boun_itr])):
         cl=str(data[boun_itr][i])
@@ -119,16 +119,16 @@ def hocr2table(sheet1, row):
     # print("Text")
     # print(text)
     boundaries=d2[boun_itr]
-    print(boundaries)
-    print(text[0])
-    print("RRR:"+str(boun_itr))
-    print(r_bounds)
-    print(len(boundaries),len(text[0]),len(r_bounds))
+    # print(boundaries)
+    # print(text[0])
+    # print("RRR:"+str(boun_itr))
+    # print(r_bounds)
+    # print(len(boundaries),len(text[0]),len(r_bounds))
     for itr in range (0,len(text[0])-1):
         if itr>=len(text[0])-1:
             break
         while int(boundaries[itr+1])-int(r_bounds[itr])<7:
-            print("Merging "+str(text[0][itr])+" And "+str(text[0][itr+1]))
+            # print("Merging "+str(text[0][itr])+" And "+str(text[0][itr+1]))
             text[0][itr]=text[0][itr]+" "+text[0].pop(itr+1)[1:]
             r_bounds.pop(itr)
             boundaries.pop(itr+1)
@@ -137,18 +137,18 @@ def hocr2table(sheet1, row):
                     if int(d2[thisitr][itr+1])-int(d2[thisitr][itr]) <10:
                         text[thisitr][itr]=text[thisitr][itr]+" ! "+text[thisitr].pop(itr+1)[1:]
                         d2[thisitr].pop(itr+1)
-                        print("Merging "+str(text[thisitr][itr])+" And "+str(text[thisitr][itr+1]))
+                        # print("Merging "+str(text[thisitr][itr])+" And "+str(text[thisitr][itr+1]))
                 except:
                     pass
             itr=itr-2
-    print("RRR:")
-    print(r_bounds)
+    # print("RRR:")
+    # print(r_bounds)
 
-    print(boundaries)
-    print(text[0])
+    # print(boundaries)
+    # print(text[0])
 
 
-    print(text)
+    # print(text)
 
     i=0
     for itr in range (0,len(text[0])):
@@ -188,10 +188,10 @@ def hocr2table(sheet1, row):
             # print(d2[j][cele+1])
             # print(r_bounds[])
             # print(text[j][arw])
-            if len(text[j])!=len(d2[j]) or len(text[j])!=len(r_bounds):
-                print(len(text[j]))
-                print(len(d2[j]))
-                print(len(r_bounds))
+            # if len(text[j])!=len(d2[j]) or len(text[j])!=len(r_bounds):
+                # print(len(text[j]))
+                # print(len(d2[j]))
+                # print(len(r_bounds))
 
             if int(d2[j][cele+1])<int(r_bounds[cele]):
                 text[j][cele]=text[j][cele]+" "+text[j].pop(cele+1)[1:]
@@ -204,17 +204,23 @@ def hocr2table(sheet1, row):
     for j in range(1,len(d2)):
         cell=0
         cellmax=len(boundaries)
-        print("\n\n")
-        print(text[j])
-        print(d2[j])
+        # print("\n\n")
+        # print(text[j])
+        # print(d2[j])
 
         for itr in range(len(text[j])):
             if cell>=len(boundaries)-1:
-                try:
-                    sheet1.write(row+j,cellmax,text[j][itr][1:])
-                except:
-                    cellmax+=1
-                    sheet1.write(row+j,cellmax,text[j][itr][1:])
+                while True:
+                    try:
+                        sheet1.write(row+j,cellmax,text[j][itr][1:])
+                        break
+                    except:
+                        cellmax+=1
+                # try:
+                #     sheet1.write(row+j,cellmax,text[j][itr][1:])
+                # except:
+                #     cellmax+=1
+                #     sheet1.write(row+j,cellmax,text[j][itr][1:])
                 continue
             while cell<len(boundaries)-1 and (int(d2[j][itr])>int(boundaries[cell+1]) or (int(d2[j][itr])==int(boundaries[cell+1])  and itr!=0)):
                 cell=cell+1

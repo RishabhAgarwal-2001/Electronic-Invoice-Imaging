@@ -23,8 +23,8 @@ def findValues(dictionaryList):
 	and values as a list of top and left position in that specific crop
 	'''
 	# for i in dictionaryList:
-	# 	print(i)
-	# print()
+	# 	# print(i)
+	# # print()
 	results = {}
 	buyerData = findBuyerValues(dictionaryList)
 	billToData = findBillerValue(dictionaryList)
@@ -77,7 +77,7 @@ def matchesPAN(txt):
 		return False
 
 def distance(point1, point2, choice=1):
-	# print(point1, point2)
+	# # print(point1, point2)
 	if(choice==1):
 		return abs(point1[0]-point2[0]) + abs(point1[1]-point2[1])
 	elif(choice==2):
@@ -173,12 +173,12 @@ def findBillerValue(dictionaryList):
 				loc = currentDictionary[w]
 				break
 			if(w.upper() in keyWords_to):
-				print("Found Something Here ", w.upper())
+				# print("Found Something Here ", w.upper())
 				neigh = wordsNext(currentDictionary, currentDictionary[w], 10)
-				print(neigh)
+				# print(neigh)
 				for i in neigh:
 					if(re.search("TO", i)):
-						print("Found TO")
+						# print("Found TO")
 						valid = True
 						loc = currentDictionary[w]
 						break
@@ -195,12 +195,12 @@ def findBillerValue(dictionaryList):
 		for w in words:
 			if((re.search("^TIN", w) or re.search("^GST", w) or re.search("^STI", w)) and isBelow(loc, currentDictionary[w])):
 				GST_Location = currentDictionary[w]
-				print("FOUnd GST at ", GST_Location)
+				# print("FOUnd GST at ", GST_Location)
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
 			neigh = wordsNext(currentDictionary, GST_Location, 25)
-			print(neigh)
+			# print(neigh)
 			for i in neigh:
 				if(len(i) > 12 or matchesGST(i)):
 					GST_Value = i
@@ -308,22 +308,22 @@ def findBuyerValues(dictionaryList):
 		if(valid==False):
 			continue
 		
-		# print("Customer Crop:", loc)
+		# # print("Customer Crop:", loc)
 		# ---------------------------------------------------------------
 		# Finding GST Number in the array of words
 		GST_Value = "" # Variable to Store the value of GST Number
 		GST_Location = None # Variable to Store the Location of KEY GST
 		# Looking for Key GST in words
 		for w in words:
-			# print("W: ",w, currentDictionary[w])
+			# # print("W: ",w, currentDictionary[w])
 			if((re.search("^TIN", w) or re.search("^GST", w) or re.search("^STI", w)) and isBelow(loc, currentDictionary[w])):
 				GST_Location = currentDictionary[w]
-				# print("Found GST At Location: ", GST_Location)
+				# # print("Found GST At Location: ", GST_Location)
 				break
 		# If Key GST exists
 		if(GST_Location is not None):
 			neigh = wordsNext(currentDictionary, GST_Location, 25)
-			# print(neigh)
+			# # print(neigh)
 			for i in neigh:
 				if(len(i)>12 or matchesGST(i)):
 					GST_Value = i
@@ -377,9 +377,9 @@ def findBuyerValues(dictionaryList):
 					break
 		# If Key GST exists
 		if(STATE_Location is not None):
-			# print("State Found--------")
+			# # print("State Found--------")
 			neigh = wordsNext(currentDictionary, STATE_Location, 20)
-			# print(neigh)
+			# # print(neigh)
 			for i in neigh:
 				if(checkState(i) != ''):
 					STATE_Value = checkState(i)
@@ -425,12 +425,12 @@ def FindDate(lod, dateList):
 		for text in currdict.keys():
 			for dateFormat in dateList:
 				if (text == dateFormat):
-					# print(text)
-					# print(currdict[text])
+					# # print(text)
+					# # print(currdict[text])
 					neighbours = wordsNext (currdict, currdict[text], 10)
 					# if (text == 'INVOICE'):
-					# 	print(neighbours)
-					# print(neighbours)
+					# 	# print(neighbours)
+					# # print(neighbours)
 					date = ''
 					for i in neighbours:
 						if (matchesDate(i)):
@@ -447,18 +447,18 @@ def FindCurrency(lod):
 	for currdict in lod:
 		for text in currdict.keys():
 			if (text == 'CURRENCY'):
-				# print(text)
-				# print(currdict[text])
+				# # print(text)
+				# # print(currdict[text])
 				neighbours = wordsNext (currdict, currdict[text], 10)
-				# print(neighbours)
+				# # print(neighbours)
 				for i in neighbours:
 					if (i == 'USD' or i == 'INR'):
 						dictionary[text] = i
 						return dictionary
 	return dictionary
 
-# print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50],
+# # print(findBuyerValues([{"BOUGHT":[10, 10], "18AABCU9603R1ZM":[20, 20], "18AABCU9603R1ZQ":[50, 50], "GSTIN":[12, 50],
 	# "PAN":[20, 20], "BNZAA2318J":[20, 25]}]))
 
-# print (matchesGST('07AABBC8888G1AZ1'))
-# print(matchesDate('01.07.2017'))
+# # print (matchesGST('07AABBC8888G1AZ1'))
+# # print(matchesDate('01.07.2017'))

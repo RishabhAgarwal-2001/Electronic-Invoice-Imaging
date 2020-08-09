@@ -69,7 +69,7 @@ def cut_rejoin():
         imcrop=im_og[top:img.shape[0],line_prev[0]-5:line[0]+5]
         imcrop = cv2.cvtColor(imcrop, cv2.COLOR_BGR2GRAY)
 
-        # print(imcrop)
+        # # print(imcrop)
         # cv2_imshow(imcrop)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()

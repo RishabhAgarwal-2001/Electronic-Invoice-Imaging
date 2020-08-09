@@ -14,6 +14,7 @@ from yaspin import yaspin
 from Table_Processsing.image_cut_and_rejoin import cut_rejoin
 from Table_Processsing.image_to_hocr import image_2_hocr
 from Table_Processsing.hocr_to_table import hocr2table
+from Table_Processsing.hocr_correct import hocr_correct
 import argparse
 
 
@@ -108,6 +109,7 @@ with yaspin(text=" ", color="yellow").bouncingBar as spinner:
 	spinner.show()
 	cut_rejoin()
 	image_2_hocr()
+	hocr_correct()
 	hocr2table(ws, row)
 	wb.save('Invoice_Sheet.xlsx')
 	# Add Ouput Path to Excel Sheet

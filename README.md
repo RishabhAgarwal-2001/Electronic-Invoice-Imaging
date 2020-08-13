@@ -16,7 +16,9 @@ pip install -r requirements.txt
 ## (2) Usage:
 Navigate to “src” folder and type in the following command to test on your own pdf file- 
 
-``` python3 main.py -i "path/to/input/pdf" -o "path/to/output/spreadsheet ```
+```console
+python3 main.py -i "path/to/input/pdf" -o "path/to/output/spreadsheet
+```
 
 *************************************************************************
 # WORKING OF THE LIBRARY
